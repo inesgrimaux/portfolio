@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Inês Grimaux</title>
+    <meta name="description" content="Get in touch with Inês Grimaux for inquiries, commissions, or collaborations.">
+    <meta property="og:title" content="Contact | Inês Grimaux">
+    <meta property="og:description" content="Get in touch with Inês Grimaux for inquiries, commissions, or collaborations.">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+            max-width: 500px;
+        }
+        .contact-form input, .contact-form textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            width: 100%;
+            background: #fff;
+        }
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .contact-form button {
+            background: var(--text-color);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            transition: background 0.3s;
+            align-self: flex-start;
+            margin-top: 10px;
+        }
+        .contact-form button:hover {
+            background: var(--accent-color);
+        }
+        .form-message {
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.9rem;
+            display: none;
+            border-radius: 0;
+            font-family: var(--font-sans);
+            letter-spacing: 0.5px;
+        }
+        .form-message.success {
+            display: block;
+            background: #f9f9f9;
+            color: var(--text-color);
+            border-left: 3px solid var(--accent-color);
+        }
+        .form-message.error {
+            display: block;
+            background: #fffafa;
+            color: var(--accent-color);
+            border-left: 3px solid var(--accent-color);
+        }
+        input:invalid, textarea:invalid {
+            border-color: #eee;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <a href="index.html">
+                    <h1>Inês <br> Grimaux</h1>
+                </a>
+            </div>
+            
+            <button class="hamburger-btn" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    
+                    <li style="margin-bottom: 0;">
+                        <span class="nav-label">Artwork Series</span>
+                        <ul class="sub-nav">
+                            <li><a href="series/photography.html">/ photography</a></li>
+                            <li><a href="series/paintings.html">/ paintings</a></li>
+                            <li><a href="series/sculptures.html">/ sculptures</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li style="margin-top:30px;"><a href="about.html">About</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="footer-nav">
+                <p>&copy; 2024 INÊS GRIMAUX</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <div class="series-info" style="margin-top: 100px;">
+                <p class="series-years">Get in Touch</p>
+                <h2 class="series-title">Contact</h2>
+                <div class="series-description">
+                    <p>For inquiries, commissions, or collaborations, please use the form below or reach out via email.</p>
+                    
+                    <form class="contact-form" id="portfolio-contact-form">
+                        <input type="text" name="nome" placeholder="Name" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="text" name="subject" placeholder="Subject">
+                        <textarea name="mensagem" placeholder="Message" rows="5" required></textarea>
+                        <button type="submit">Send Message</button>
+                    </form>
+                    <div id="form-response" class="form-message"></div>
+
+                    <div style="margin-top: 60px; font-size: 0.9rem; color: #666;">
+                        <p>Salvador, Bahia, Brazil</p>
+                        <p style="margin-top: 10px;">Email: inesgrimaux@icloud.com</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        const contactForm = document.getElementById('portfolio-contact-form');
+        const formResponse = document.getElementById('form-response');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Script URL from Google Apps Script deployment
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyOVk6Jv-nv03iH_jeIoSjvEnVayKAwgLhhFH2j8inGnpg6FBPTi8PoM-F9CdykcOD8Dw/exec';
+            
+            const submitBtn = contactForm.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Sending...';
+            formResponse.className = 'form-message'; // Reset classes
+            formResponse.innerText = '';
+            
+            // Merge Subject into Message for the simple script
+            const formData = new FormData(contactForm);
+            const subject = formData.get('subject') || 'No Subject';
+            const originalMessage = formData.get('mensagem');
+            formData.set('mensagem', `[Subject: ${subject}]\n\n${originalMessage}`);
+            
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            })
+            .then(response => {
+                formResponse.className = 'form-message success';
+                formResponse.innerText = 'Thank you! Your message has been sent successfully.';
+                contactForm.reset();
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Send Message';
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                formResponse.className = 'form-message error';
+                formResponse.innerText = 'Oops! Something went wrong. Please try again later or contact me directly via email.';
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Send Message';
+            });
+        });
+    </script>
+</body>
+</html>
