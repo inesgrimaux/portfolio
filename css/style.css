@@ -410,4 +410,7 @@ main.content {
     .series-title {
         font-size: 2rem;
     }
+    .lightbox-arrow {
+        display: none !important;
+    }
 }
