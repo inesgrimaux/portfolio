@@ -9,7 +9,10 @@ const i18n = {
 
     async init() {
         try {
-            const response = await fetch('/translations.json');
+            // Resolve path relative to site root
+            const basePath = document.querySelector('script[src*="i18n.js"]').src;
+            const rootPath = basePath.substring(0, basePath.lastIndexOf('/js/'));
+            const response = await fetch(rootPath + '/translations.json');
             this.translations = await response.json();
             
             // 1. Check local storage
@@ -38,11 +41,21 @@ const i18n = {
     },
 
     applyTranslations() {
+        // Text content
         const elements = document.querySelectorAll('[data-i18n]');
         elements.forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (this.translations[this.currentLang] && this.translations[this.currentLang][key]) {
                 el.innerText = this.translations[this.currentLang][key];
+            }
+        });
+
+        // Placeholders
+        const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+        placeholders.forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (this.translations[this.currentLang] && this.translations[this.currentLang][key]) {
+                el.placeholder = this.translations[this.currentLang][key];
             }
         });
     },

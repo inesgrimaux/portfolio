@@ -10,6 +10,7 @@
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="article">
@@ -30,9 +31,12 @@
 
     <title>Photography | Ines Grimaux</title>
     <meta name="description" content="Photography series by contemporary artist Ines Grimaux.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="https://inesgrimaux.com/inesgrimaux.ico" type="image/x-icon">
-    <script src="../js/i18n.js"></script>
+    <script src="../js/i18n.js" defer></script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -72,12 +76,12 @@
                 </ul>
             </nav>
 
-            <div class="lang-switcher">
-                <a onclick="i18n.setLanguage('en')">EN</a>
-                <span>|</span>
-                <a onclick="i18n.setLanguage('es')">ES</a>
-                <span>|</span>
-                <a onclick="i18n.setLanguage('pt')">PT</a>
+            <div class="lang-switcher" role="navigation" aria-label="Language selector">
+                <a role="button" tabindex="0" aria-label="English" onclick="i18n.setLanguage('en')">EN</a>
+                <span aria-hidden="true">|</span>
+                <a role="button" tabindex="0" aria-label="Espanol" onclick="i18n.setLanguage('es')">ES</a>
+                <span aria-hidden="true">|</span>
+                <a role="button" tabindex="0" aria-label="Portugues" onclick="i18n.setLanguage('pt')">PT</a>
             </div>
 
             <div class="footer-nav">
@@ -115,7 +119,7 @@
             <!-- River Series Section -->
             <div class="series-info" id="river-series" style="margin-bottom: 30px;">
                 <h3 style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400; font-style: italic;">River Series</h3>
-                <p class="curatorial-text" data-i18n="river_series_desc">Un estudio visual profundo donde la Artista investiga la dinámica fluida y la naturaleza efímera de los entornos acuáticos. A través de una mirada minimalista, Grimaux despoja al paisaje de su literalidad para centrarse en la textura de la luz y el rastro invisible del movimiento.</p>
+                <p class="curatorial-text" data-i18n="river_series_desc">Un estudio visual profundo donde la artista investiga la dinámica fluida y la naturaleza efímera de los entornos acuáticos. A través de una mirada minimalista, Grimaux despoja al paisaje de su literalidad para centrarse en la textura de la luz y el rastro invisible del movimiento.</p>
             </div>
             <div class="gallery-grid">
                 <div class="gallery-item" data-title="River Whisper I" data-technique="Photography" data-size="Various" data-year="2016" data-more="https://www.instagram.com/inesgrimaux/">
@@ -445,7 +449,7 @@
             <!-- Siren Jones Section -->
             <div class="series-info" id="siren-jones" style="margin-top: 60px; margin-bottom: 30px;">
                 <h3 style="font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400; font-style: italic;">Siren Jones</h3>
-                <p class="curatorial-text" data-i18n="siren_jones_desc">En esta serie, la Artista captura la potencia performática de Elizabeth Doud a través de su personaje activista "Siren Jones". La fotografía de Inés Grimaux no actúa meramente como registro documental, sino que eleva la urgencia del mensaje ambiental a una dimensión estética contemplativa. Esta colaboración ha sido reconocida internacionalmente y destacada en publicaciones especializadas (American Theatre, Miami), consolidándose como una referencia en la intersección entre arte, ecología y performance.</p>
+                <p class="curatorial-text" data-i18n="siren_jones_desc">En esta serie, la artista captura la potencia performática de Elizabeth Doud a través de su personaje activista "Siren Jones". La fotografía de Inés Grimaux no actúa meramente como registro documental, sino que eleva la urgencia del mensaje ambiental a una dimensión estética contemplativa. Esta colaboración ha sido reconocida internacionalmente y destacada en publicaciones especializadas (American Theatre, Miami), consolidándose como una referencia en la intersección entre arte, ecología y performance.</p>
             </div>
             <div class="gallery-grid">
                 <div class="gallery-item" data-title="The Mermaid Tear Factory - Elizabeth Doud" data-technique="Performance Photography" data-size="Various" data-year="2018" data-more="https://www.americantheatre.org/2020/02/18/digging-for-new-roots/">

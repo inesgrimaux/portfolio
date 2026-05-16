@@ -10,6 +10,7 @@
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -30,8 +31,12 @@
 
     <title>Contact | Ines Grimaux</title>
     <meta name="description" content="Get in touch with Ines Grimaux for inquiries, commissions, or collaborations.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="https://inesgrimaux.com/inesgrimaux.ico" type="image/x-icon">
+    <script src="js/i18n.js" defer></script>
     <style>
         .contact-form {
             display: flex;
@@ -120,21 +125,29 @@
             
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html" data-i18n="nav_home">Home</a></li>
                     
                     <li style="margin-bottom: 0;">
-                        <span class="nav-label">Artwork Series</span>
+                        <span class="nav-label" data-i18n="nav_artwork">Artwork Series</span>
                         <ul class="sub-nav">
-                            <li><a href="series/photography.html">/ photography</a></li>
-                            <li><a href="series/paintings.html">/ paintings</a></li>
-                            <li><a href="series/sculptures.html">/ sculptures</a></li>
+                            <li><a href="series/photography.html" data-i18n="nav_photography">/ photography</a></li>
+                            <li><a href="series/paintings.html" data-i18n="nav_paintings">/ paintings</a></li>
+                            <li><a href="series/sculptures.html" data-i18n="nav_sculptures">/ sculptures</a></li>
                         </ul>
                     </li>
                     
-                    <li style="margin-top:30px;"><a href="about.html">About</a></li>
-                    <li><a href="contact.html" class="active">Contact</a></li>
+                    <li style="margin-top:30px;"><a href="about.html" data-i18n="nav_about">About</a></li>
+                    <li><a href="contact.html" class="active" data-i18n="nav_contact">Contact</a></li>
                 </ul>
             </nav>
+
+            <div class="lang-switcher" role="navigation" aria-label="Language selector">
+                <a role="button" tabindex="0" aria-label="English" onclick="i18n.setLanguage('en')">EN</a>
+                <span aria-hidden="true">|</span>
+                <a role="button" tabindex="0" aria-label="Espanol" onclick="i18n.setLanguage('es')">ES</a>
+                <span aria-hidden="true">|</span>
+                <a role="button" tabindex="0" aria-label="Portugues" onclick="i18n.setLanguage('pt')">PT</a>
+            </div>
 
             <div class="footer-nav">
                 <p>&copy; 2026 INES GRIMAUX</p>
@@ -144,17 +157,17 @@
         <!-- Main Content -->
         <main class="content">
             <div class="series-info" style="margin-top: 100px;">
-                <p class="series-years">Get in Touch</p>
-                <h2 class="series-title">Contact</h2>
+                <p class="series-years" data-i18n="contact_subtitle">Get in Touch</p>
+                <h2 class="series-title" data-i18n="contact_title">Contact</h2>
                 <div class="series-description">
-                    <p>For inquiries, commissions, or collaborations, please use the form below or reach out via email.</p>
+                    <p data-i18n="contact_desc">For inquiries, commissions, or collaborations, please use the form below or reach out via email.</p>
                     
                     <form class="contact-form" id="portfolio-contact-form">
-                        <input type="text" name="nome" placeholder="Name" required>
-                        <input type="email" name="email" placeholder="Email" required>
-                        <input type="text" name="subject" placeholder="Subject">
-                        <textarea name="mensagem" placeholder="Message" rows="5" required></textarea>
-                        <button type="submit">Send Message</button>
+                        <input type="text" name="nome" data-i18n-placeholder="contact_name" placeholder="Name" required>
+                        <input type="email" name="email" data-i18n-placeholder="contact_email" placeholder="Email" required>
+                        <input type="text" name="subject" data-i18n-placeholder="contact_subject" placeholder="Subject">
+                        <textarea name="mensagem" data-i18n-placeholder="contact_message" placeholder="Message" rows="5" required></textarea>
+                        <button type="submit" data-i18n="contact_send">Send Message</button>
                     </form>
                     <div id="form-response" class="form-message"></div>
 
@@ -167,7 +180,7 @@
         </main>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js" defer></script>
     <script>
         const contactForm = document.getElementById('portfolio-contact-form');
         const formResponse = document.getElementById('form-response');
@@ -180,7 +193,7 @@
             
             const submitBtn = contactForm.querySelector('button');
             submitBtn.disabled = true;
-            submitBtn.innerText = 'Sending...';
+            submitBtn.innerText = i18n.translations[i18n.currentLang]['contact_sending'];
             formResponse.className = 'form-message'; // Reset classes
             formResponse.innerText = '';
             
@@ -197,17 +210,17 @@
             })
             .then(response => {
                 formResponse.className = 'form-message success';
-                formResponse.innerText = 'Thank you! Your message has been sent successfully.';
+                formResponse.innerText = i18n.translations[i18n.currentLang]['contact_success'];
                 contactForm.reset();
                 submitBtn.disabled = false;
-                submitBtn.innerText = 'Send Message';
+                submitBtn.innerText = i18n.translations[i18n.currentLang]['contact_send'];
             })
             .catch(error => {
                 console.error('Error!', error.message);
                 formResponse.className = 'form-message error';
-                formResponse.innerText = 'Oops! Something went wrong. Please try again later or contact me directly via email.';
+                formResponse.innerText = i18n.translations[i18n.currentLang]['contact_error'];
                 submitBtn.disabled = false;
-                submitBtn.innerText = 'Send Message';
+                submitBtn.innerText = i18n.translations[i18n.currentLang]['contact_send'];
             });
         });
     </script>

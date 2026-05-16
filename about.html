@@ -10,6 +10,7 @@
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
     <title>About | Ines Grimaux</title>
     <meta name="description" content="Biography and background of Ines Grimaux.">
 
@@ -29,9 +30,12 @@
     <meta name="twitter:title" content="About | Ines Grimaux">
     <meta name="twitter:description" content="Biography and artistic background of contemporary artist Ines Grimaux.">
     <meta name="twitter:image" content="https://inesgrimaux.com/IMAGENS/og-share-siren-jones.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="https://inesgrimaux.com/inesgrimaux.ico" type="image/x-icon">
-    <script src="js/i18n.js"></script>
+    <script src="js/i18n.js" defer></script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -71,12 +75,12 @@
                 </ul>
             </nav>
 
-            <div class="lang-switcher">
-                <a onclick="i18n.setLanguage('en')">EN</a>
-                <span>|</span>
-                <a onclick="i18n.setLanguage('es')">ES</a>
-                <span>|</span>
-                <a onclick="i18n.setLanguage('pt')">PT</a>
+            <div class="lang-switcher" role="navigation" aria-label="Language selector">
+                <a role="button" tabindex="0" aria-label="English" onclick="i18n.setLanguage('en')">EN</a>
+                <span aria-hidden="true">|</span>
+                <a role="button" tabindex="0" aria-label="Espanol" onclick="i18n.setLanguage('es')">ES</a>
+                <span aria-hidden="true">|</span>
+                <a role="button" tabindex="0" aria-label="Portugues" onclick="i18n.setLanguage('pt')">PT</a>
             </div>
 
             <div class="footer-nav">
@@ -94,7 +98,7 @@
                         Ines Grimaux is a contemporary artist and environmentalist whose multidisciplinary practice spans photography, drawing, painting, and sculpture. For many years based on the Island of Itaparica, Bahia, she has been a dedicated supporter of various NGOs, integrating her artistic vision with environmental activism and territorial development.
                     </p>
                     <p style="margin-top: 20px;" data-i18n="bio_p2">
-                        Her work explores perception beyond appearance, creating contemplative visual experiences that manifest as a continuous observation of existence. In her practice, photography often serves as a powerful medium for performance documentation, such as the <em>Siren Jones</em> seriesâ€”a collaboration with performer Elizabeth Doud that gained international recognition and was featured in publications in Miami.
+                        Her work explores perception beyond appearance, creating contemplative visual experiences that manifest as a continuous observation of existence. In her practice, photography often serves as a powerful medium for performance documentation, such as the <em>Siren Jones</em> series - a collaboration with performer Elizabeth Doud that gained international recognition and was featured in publications in Miami.
                     </p>
                     <p style="margin-top: 20px;" data-i18n="bio_p3">
                         As a multifaceted professional, her career transitions between artistic and documentary photography, cultural management, and strategic design. Between 2013 and 2026, she has systematically articulated contemporary art, traditional communities, and cultural policies in Bahia, Brazil, with international reverberations in the fields of performance and environmental activism.
@@ -105,7 +109,7 @@
         </main>
     </div>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js" defer></script>
 </body>
 </html>
 
