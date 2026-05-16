@@ -28,12 +28,11 @@
     <!-- Preconnect & Fonts (non-render-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet"></noscript>
 
     <!-- Preload hero image for LCP -->
-    <link rel="preload" as="image" href="IMAGENS/photography/siren_jones/Siren Jones - Mar Grande - Ines Grimaux (2).jpg">
+    <link rel="preload" as="image" fetchpriority="high" href="IMAGENS/photography/siren_jones/Siren%20Jones%20-%20Mar%20Grande%20-%20Ines%20Grimaux%20(2).jpg">
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="https://inesgrimaux.com/inesgrimaux.ico" type="image/x-icon">
@@ -77,13 +76,13 @@
                 </ul>
             </nav>
 
-            <div class="lang-switcher" role="navigation" aria-label="Language selector">
-                <a role="button" tabindex="0" aria-label="English" onclick="i18n.setLanguage('en')">EN</a>
+            <nav class="lang-switcher" aria-label="Language selector">
+                <button type="button" aria-label="English" onclick="i18n.setLanguage('en')">EN</button>
                 <span aria-hidden="true">|</span>
-                <a role="button" tabindex="0" aria-label="Espanol" onclick="i18n.setLanguage('es')">ES</a>
+                <button type="button" aria-label="Espanol" onclick="i18n.setLanguage('es')">ES</button>
                 <span aria-hidden="true">|</span>
-                <a role="button" tabindex="0" aria-label="Portugues" onclick="i18n.setLanguage('pt')">PT</a>
-            </div>
+                <button type="button" aria-label="Portugues" onclick="i18n.setLanguage('pt')">PT</button>
+            </nav>
 
             <div class="footer-nav">
                 <p>&copy; 2026 INES GRIMAUX</p>
@@ -93,9 +92,9 @@
         <!-- Main Content -->
         <main class="content">
             <section class="hero-section slideshow-container" id="heroSlideshow">
-                <div class="slide active" style="background-image: url('IMAGENS/photography/siren_jones/Siren Jones - Mar Grande - Ines Grimaux (2).jpg');" aria-label="Siren Jones Performance Photography"></div>
-                <div class="slide" style="background-image: url('IMAGENS/photography/city/IMG-20171229-WA0071.jpg');" aria-label="City Series Photography"></div>
-                <div class="slide" style="background-image: url('IMAGENS/paintings/works_on_paper/Ines_Grimaux_Painting_Paper_10.jpg');" aria-label="Abstract Works on Paper Painting"></div>
+                <img class="slide active" src="IMAGENS/photography/siren_jones/Siren Jones - Mar Grande - Ines Grimaux (2).jpg" alt="Siren Jones Performance Photography" fetchpriority="high">
+                <img class="slide" src="IMAGENS/photography/city/IMG-20171229-WA0071.jpg" alt="City Series Photography" loading="lazy">
+                <img class="slide" src="IMAGENS/paintings/works_on_paper/Ines_Grimaux_Painting_Paper_10.jpg" alt="Abstract Works on Paper Painting" loading="lazy">
             </section>
 
             <div class="series-info">

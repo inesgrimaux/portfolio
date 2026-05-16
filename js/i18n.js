@@ -61,12 +61,12 @@ const i18n = {
     },
 
     updateActiveSwitcher(lang) {
-        const links = document.querySelectorAll('.lang-switcher a');
-        links.forEach(link => {
-            if (link.getAttribute('onclick').includes(`'${lang}'`)) {
-                link.classList.add('active');
+        const buttons = document.querySelectorAll('.lang-switcher button');
+        buttons.forEach(btn => {
+            if (btn.getAttribute('onclick').includes(`'${lang}'`)) {
+                btn.classList.add('active');
             } else {
-                link.classList.remove('active');
+                btn.classList.remove('active');
             }
         });
     }
