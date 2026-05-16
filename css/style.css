@@ -1,4 +1,4 @@
-/* Google Fonts loaded via <link> in HTML for better performance */
+@import url('fonts.css');
 
 :root {
     --bg-color: #ffffff;

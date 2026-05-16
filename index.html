@@ -25,14 +25,15 @@
     <title>Ines Grimaux | artist portfolio</title>
     <meta name="description" content="Portfolio of contemporary artist Ines Grimaux. Photography, Sculpture, Drawing, and Cultural Management.">
 
-    <!-- Preconnect & Fonts (non-render-blocking) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet"></noscript>
+    <!-- Self-hosted fonts with preload for zero CLS -->
+    <link rel="preload" href="fonts/montserrat-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/eb-garamond-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 
-    <!-- Preload hero image for LCP -->
-    <link rel="preload" as="image" type="image/webp" fetchpriority="high" href="IMAGENS/photography/siren_jones/Siren%20Jones%20-%20Mar%20Grande%20-%20Ines%20Grimaux%20(2).webp">
+    <!-- Preload hero image for LCP (responsive) -->
+    <link rel="preload" as="image" fetchpriority="high"
+          imagesrcset="IMAGENS/photography/siren_jones/siren-jones-hero-800w.webp 800w, IMAGENS/photography/siren_jones/Siren%20Jones%20-%20Mar%20Grande%20-%20Ines%20Grimaux%20(2).webp 2500w"
+          imagesizes="100vw"
+          type="image/webp">
 
     <!-- Critical CSS inlined for performance -->
     <style>
@@ -99,16 +100,16 @@
         <main class="content">
             <section class="hero-section slideshow-container" id="heroSlideshow">
                 <picture class="slide active">
-                    <source srcset="IMAGENS/photography/siren_jones/Siren Jones - Mar Grande - Ines Grimaux (2).webp" type="image/webp">
-                    <img src="IMAGENS/photography/siren_jones/Siren Jones - Mar Grande - Ines Grimaux (2).jpg" alt="Siren Jones Performance Photography" fetchpriority="high" width="2500" height="1667">
+                    <source srcset="IMAGENS/photography/siren_jones/siren-jones-hero-800w.webp 800w, IMAGENS/photography/siren_jones/Siren Jones - Mar Grande - Ines Grimaux (2).webp 2500w" sizes="100vw" type="image/webp">
+                    <img src="IMAGENS/photography/siren_jones/Siren Jones - Mar Grande - Ines Grimaux (2).jpg" alt="Siren Jones Performance Photography" fetchpriority="high" width="2500" height="1667" decoding="sync">
                 </picture>
                 <picture class="slide">
-                    <source srcset="IMAGENS/photography/city/IMG-20171229-WA0071.webp" type="image/webp">
-                    <img src="IMAGENS/photography/city/IMG-20171229-WA0071.jpg" alt="City Series Photography" loading="lazy" width="1159" height="869">
+                    <source srcset="IMAGENS/photography/city/city-hero-800w.webp 800w, IMAGENS/photography/city/IMG-20171229-WA0071.webp 1159w" sizes="100vw" type="image/webp">
+                    <img src="IMAGENS/photography/city/IMG-20171229-WA0071.jpg" alt="City Series Photography" loading="lazy" width="1159" height="869" decoding="async">
                 </picture>
                 <picture class="slide">
-                    <source srcset="IMAGENS/paintings/works_on_paper/Ines_Grimaux_Painting_Paper_10.webp" type="image/webp">
-                    <img src="IMAGENS/paintings/works_on_paper/Ines_Grimaux_Painting_Paper_10.jpg" alt="Abstract Works on Paper Painting" loading="lazy" width="1159" height="869">
+                    <source srcset="IMAGENS/paintings/works_on_paper/painting-hero-800w.webp 800w, IMAGENS/paintings/works_on_paper/Ines_Grimaux_Painting_Paper_10.webp 1159w" sizes="100vw" type="image/webp">
+                    <img src="IMAGENS/paintings/works_on_paper/Ines_Grimaux_Painting_Paper_10.jpg" alt="Abstract Works on Paper Painting" loading="lazy" width="1159" height="869" decoding="async">
                 </picture>
             </section>
 
