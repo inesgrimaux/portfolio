@@ -28,7 +28,11 @@
     "contact_send": "Send Message",
     "contact_sending": "Sending...",
     "contact_success": "Thank you! Your message has been sent successfully.",
-    "contact_error": "Oops! Something went wrong. Please try again later or contact me directly via email."
+    "contact_error": "Oops! Something went wrong. Please try again later or contact me directly via email.",
+    "hero_subtitle": "Between Worlds",
+    "hero_title": "Evidencing What Transcends",
+    "hero_desc_p1": "The work of Ines Grimaux brings together photography, drawing, painting, and sculpture as modes of investigating perception, making visible dimensions that exceed immediate appearance and opening a contemplative field of experience.",
+    "hero_desc_p2": "Explore her latest series of artworks and cultural projects that bridge the gap between contemporary art and traditional communities."
   },
   "es": {
     "nav_home": "Inicio",
@@ -59,7 +63,11 @@
     "contact_send": "Enviar Mensaje",
     "contact_sending": "Enviando...",
     "contact_success": "¡Gracias! Su mensaje ha sido enviado con éxito.",
-    "contact_error": "¡Vaya! Algo ha ido mal. Por favor, inténtelo de nuevo más tarde o póngase en contacto conmigo directamente por correo electrónico."
+    "contact_error": "¡Vaya! Algo ha ido mal. Por favor, inténtelo de nuevo más tarde o póngase en contacto conmigo directamente por correo electrónico.",
+    "hero_subtitle": "Entre Mundos",
+    "hero_title": "Evidenciando lo que Trasciende",
+    "hero_desc_p1": "La obra de Inés Grimaux reúne fotografía, dibujo, pintura y escultura como modos de investigar la percepción, haciendo visibles dimensiones que exceden la apariencia inmediata y abriendo un campo de experiencia contemplativo.",
+    "hero_desc_p2": "Explore sus últimas series de obras y proyectos culturales que acortan la distancia entre el arte contemporáneo y las comunidades tradicionales."
   },
   "pt": {
     "nav_home": "Início",
@@ -90,6 +98,10 @@
     "contact_send": "Enviar Mensagem",
     "contact_sending": "Enviando...",
     "contact_success": "Obrigado! Sua mensagem foi enviada com sucesso.",
-    "contact_error": "Ops! Algo deu errado. Por favor, tente novamente mais tarde ou entre em contato diretamente por e-mail."
+    "contact_error": "Ops! Algo deu errado. Por favor, tente novamente mais tarde ou entre em contato diretamente por e-mail.",
+    "hero_subtitle": "Entre Mundos",
+    "hero_title": "Evidenciando o que Transcende",
+    "hero_desc_p1": "A obra de Inês Grimaux reúne fotografia, desenho, pintura e escultura como modos de investigar a percepção, tornando visíveis dimensões que excedem a aparência imediata e abrindo um campo de experiência contemplativo.",
+    "hero_desc_p2": "Explore suas últimas séries de obras e projetos culturais que encurtam a distância entre a arte contemporânea e las comunidades tradicionais."
   }
 }
