@@ -1,0 +1,19 @@
+# Ines Grimaux
+
+> Contemporary artist and environmentalist whose multidisciplinary practice spans photography, drawing, painting, and sculpture. Heavily integrated with territorial development, eco-performance, and community projects in Itaparica, Bahia, Brazil and Buenos Aires, Argentina.
+
+## Main Navigation
+
+- [Home](https://inesgrimaux.com/index.html): Main portal showcasing the artist's philosophy, news, and highlight galleries.
+- [About](https://inesgrimaux.com/about.html): Official professional biography, timeline of exhibitions, environmental activism record, and educational background.
+- [Contact](https://inesgrimaux.com/contact.html): Contact portal linked to Google Apps Script and automated mailing list for gallery inquiries and collaboration proposals.
+
+## Artwork Series
+
+- [/series/photography](https://inesgrimaux.com/series/photography.html): High-fidelity photo-performance galleries, featuring *Siren Jones* (an eco-performance documentation in collaboration with Elizabeth Doud) and urban narrative series.
+- [/series/paintings](https://inesgrimaux.com/series/paintings.html): Collection of abstract paintings, sketches, and mixed media works on paper.
+- [/series/sculptures](https://inesgrimaux.com/series/sculptures.html): Dynamic physical and spatial structures utilizing local, organic, and recycled materials.
+
+## AI Ingestion & Verification
+
+- [AI Data (ai-data.html)](https://inesgrimaux.com/ai-data.html): A machine-readable verification page hosting JSON-LD Schema (Person type) and verified links to academic publications (UFBA), public administration records (ba.gov.br), international magazines (American Theatre), and press releases (Alô Alô Bahia, Bahia Notícias, A Tarde) verifying the artist's professional pedigree.

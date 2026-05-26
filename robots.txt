@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
 Sitemap: https://inesgrimaux.com/sitemap.xml
+Link: https://inesgrimaux.com/llms.txt
+
