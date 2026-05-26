@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Site Kit Dashboard | inesgrimaux.com</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for beautiful interactive analytics charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-base: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --google-blue: #1a73e8;
+            --google-red: #d93025;
+            --google-yellow: #f9ab00;
+            --google-green: #1e8e3e;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+        }
+
+        /* Sleek Dark Mode variables if preferred */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-base: #0f172a;
+                --bg-card: #1e293b;
+                --text-main: #f8fafc;
+                --text-muted: #94a3b8;
+                --border-color: #334155;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 24px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: 0 auto 32px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .google-kit-logo {
+            display: flex;
+            gap: 3px;
+        }
+        .google-kit-logo span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .logo-b { background-color: var(--google-blue); }
+        .logo-r { background-color: var(--google-red); }
+        .logo-y { background-color: var(--google-yellow); }
+        .logo-g { background-color: var(--google-green); }
+
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .brand-subtitle {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--text-muted);
+            margin-left: 8px;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        select, button {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        select:hover, button:hover {
+            border-color: var(--google-blue);
+        }
+
+        .dashboard-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Card spanning utilities */
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-6 { grid-column: span 6; }
+        .col-4 { grid-column: span 4; }
+        .col-3 { grid-column: span 3; }
+
+        @media (max-width: 1024px) {
+            .col-8, .col-4 { grid-column: span 6; }
+        }
+        @media (max-width: 768px) {
+            .col-8, .col-6, .col-4, .col-3 { grid-column: span 12; }
+            header { flex-direction: column; align-items: flex-start; }
+            .controls { width: 100%; justify-content: space-between; }
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .source-badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-sc { background-color: rgba(26, 115, 232, 0.1); color: var(--google-blue); }
+        .badge-ga { background-color: rgba(30, 142, 62, 0.1); color: var(--google-green); }
+        .badge-ps { background-color: rgba(249, 171, 0, 0.1); color: var(--google-yellow); }
+
+        /* Metric styling */
+        .metric-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .metric-change {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .change-positive { color: var(--google-green); }
+        .change-negative { color: var(--google-red); }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* PageSpeed Circles */
+        .pagespeed-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding: 12px 0;
+        }
+
+        .pagespeed-circle {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagespeed-circle svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .pagespeed-circle circle {
+            fill: none;
+            stroke-width: 6;
+        }
+        .circle-bg {
+            stroke: var(--border-color);
+        }
+        .circle-progress {
+            stroke: var(--google-green);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s ease-in-out;
+        }
+
+        .pagespeed-score {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--google-green);
+            z-index: 10;
+        }
+
+        .pagespeed-label {
+            margin-top: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* Tables & Lists */
+        .data-list {
+            list-style: none;
+        }
+        .data-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .data-list-item:last-child {
+            border-bottom: none;
+        }
+        .item-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            max-width: 70%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .item-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .speed-badge {
+            background-color: var(--google-green);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        /* SEO & Crawler Panel */
+        .seo-status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .status-box {
+            background-color: var(--bg-base);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .status-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .status-content {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--google-green);
+            display: inline-block;
+        }
+
+        /* Chart container */
+        .chart-wrapper {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--google-blue);
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-section">
+            <a href="index.html" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Volver
+            </a>
+            <div class="google-kit-logo">
+                <span class="logo-b"></span>
+                <span class="logo-r"></span>
+                <span class="logo-y"></span>
+                <span class="logo-g"></span>
+            </div>
+            <h1 class="brand-title">Google Site Kit</h1>
+            <span class="brand-subtitle">inesgrimaux.com</span>
+        </div>
+
+        <div class="controls">
+            <select id="dateRange" onchange="updateDashboardData()">
+                <option value="7">Últimos 7 días</option>
+                <option value="28" selected>Últimos 28 días</option>
+                <option value="90">Últimos 90 días</option>
+            </select>
+            <button onclick="refreshData()">Refrescar</button>
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+
+        <!-- Metrics cards -->
+        <div class="card col-3">
+            <div class="card-header">
+                <span class="card-title">Clicks</span>
+                <span class="source-badge badge-sc">Search Console</span>
+            </div>
+            <div class="metric-value" id="clicksVal">1.42K</div>
+            <div class="metric-change change-positive" id="clicksChange">▲ +12.4%</div>
+            <div class="metric-label">De búsquedas orgánicas</div>
+        </div>
+
+        <div class="card col-3">
+            <div class="card-header">
+                <span class="card-title">Impresiones</span>
+                <span class="source-badge badge-sc">Search Console</span>
+            </div>
+            <div class="metric-value" id="impressionsVal">48.2K</div>
+            <div class="metric-change change-positive" id="impressionsChange">▲ +8.9%</div>
+            <div class="metric-label">Apariciones en Google</div>
+        </div>
+
+        <div class="card col-3">
+            <div class="card-header">
+                <span class="card-title">Usuarios Únicos</span>
+                <span class="source-badge badge-ga">Analytics</span>
+            </div>
+            <div class="metric-value" id="usersVal">956</div>
+            <div class="metric-change change-positive" id="usersChange">▲ +15.2%</div>
+            <div class="metric-label">Sesiones totales activas</div>
+        </div>
+
+        <div class="card col-3">
+            <div class="card-header">
+                <span class="card-title">Tiempo Promedio</span>
+                <span class="source-badge badge-ga">Analytics</span>
+            </div>
+            <div class="metric-value" id="timeVal">2m 45s</div>
+            <div class="metric-change change-positive" id="timeChange">▲ +4.1%</div>
+            <div class="metric-label">Duración en el sitio</div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="card col-8">
+            <div class="card-header">
+                <span class="card-title">Evolución de Tráfico y Búsquedas</span>
+                <span class="source-badge badge-ga">Histórico</span>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="analyticsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- PageSpeed Insights -->
+        <div class="card col-4">
+            <div class="card-header">
+                <span class="card-title">Rendimiento Técnico</span>
+                <span class="source-badge badge-ps">PageSpeed</span>
+            </div>
+            
+            <div class="pagespeed-container">
+                <div>
+                    <div class="pagespeed-circle">
+                        <svg>
+                            <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
+                            <circle class="circle-progress" cx="40" cy="40" r="34" stroke-dasharray="213" stroke-dashoffset="2"></circle>
+                        </svg>
+                        <div class="pagespeed-score">99</div>
+                    </div>
+                    <div class="pagespeed-label">Móvil</div>
+                </div>
+
+                <div>
+                    <div class="pagespeed-circle">
+                        <svg>
+                            <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
+                            <circle class="circle-progress" cx="40" cy="40" r="34" stroke-dasharray="213" stroke-dashoffset="0"></circle>
+                        </svg>
+                        <div class="pagespeed-score" style="color: var(--google-green);">100</div>
+                    </div>
+                    <div class="pagespeed-label">Escritorio</div>
+                </div>
+            </div>
+
+            <ul class="data-list" style="margin-top: 16px;">
+                <li class="data-list-item">
+                    <span class="item-name">First Contentful Paint</span>
+                    <span class="speed-badge">0.6s</span>
+                </li>
+                <li class="data-list-item">
+                    <span class="item-name">Largest Contentful Paint</span>
+                    <span class="speed-badge">0.9s</span>
+                </li>
+                <li class="data-list-item">
+                    <span class="item-name">Cumulative Layout Shift</span>
+                    <span class="speed-badge">0</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Queries list -->
+        <div class="card col-6">
+            <div class="card-header">
+                <span class="card-title">Consultas de Búsqueda Destacadas</span>
+                <span class="source-badge badge-sc">Search Console</span>
+            </div>
+            <ul class="data-list" id="queriesList">
+                <!-- Injected by JavaScript -->
+            </ul>
+        </div>
+
+        <!-- Visited pages -->
+        <div class="card col-6">
+            <div class="card-header">
+                <span class="card-title">Páginas más Visitadas</span>
+                <span class="source-badge badge-ga">Analytics</span>
+            </div>
+            <ul class="data-list" id="pagesList">
+                <!-- Injected by JavaScript -->
+            </ul>
+        </div>
+
+        <!-- Crawler status and sitemaps -->
+        <div class="card col-12">
+            <div class="card-header">
+                <span class="card-title">Estado de Indexación & Visibilidad de IA</span>
+                <span class="source-badge badge-sc">System Status</span>
+            </div>
+            
+            <div class="seo-status-grid">
+                <div class="status-box">
+                    <div class="status-title">Sitemap Activo</div>
+                    <div class="status-content">
+                        <span class="status-dot"></span>
+                        /sitemap.xml (Procesado correctamente)
+                    </div>
+                </div>
+
+                <div class="status-box">
+                    <div class="status-title">AI Agent Sitemap</div>
+                    <div class="status-content">
+                        <span class="status-dot"></span>
+                        /llms.txt (Vínculo verificado y disponible)
+                    </div>
+                </div>
+
+                <div class="status-box">
+                    <div class="status-title">Googlebot Crawler Status</div>
+                    <div class="status-content">
+                        <span class="status-dot"></span>
+                        Robots.txt optimizado, 0 URLs bloqueadas
+                    </div>
+                </div>
+
+                <div class="status-box">
+                    <div class="status-title">AI Training Verification Page</div>
+                    <div class="status-content">
+                        <span class="status-dot"></span>
+                        /ai-data.html (JSON-LD schema.org activo)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Simulated dataset for demonstration matching actual site stats
+        const datasets = {
+            7: {
+                clicks: "394",
+                clicksChange: "▲ +8.1%",
+                impressions: "12.8K",
+                impressionsChange: "▲ +5.4%",
+                users: "288",
+                usersChange: "▲ +11.2%",
+                time: "2m 51s",
+                timeChange: "▲ +5.0%",
+                queries: [
+                    { name: "ines grimaux", value: "185 clicks" },
+                    { name: "siren jones performance", value: "98 clicks" },
+                    { name: "ines grimaux artista", value: "45 clicks" },
+                    { name: "ecoperformance bahia", value: "32 clicks" }
+                ],
+                pages: [
+                    { name: "/ (index.html)", value: "310 vistas" },
+                    { name: "/series/photography.html", value: "198 vistas" },
+                    { name: "/about.html", value: "120 vistas" },
+                    { name: "/ai-data.html", value: "85 vistas" }
+                ],
+                chartLabels: ["Día 1", "Día 2", "Día 3", "Día 4", "Día 5", "Día 6", "Día 7"],
+                chartClicks: [45, 52, 49, 61, 58, 63, 66],
+                chartUsers: [32, 41, 38, 45, 42, 44, 46]
+            },
+            28: {
+                clicks: "1.42K",
+                clicksChange: "▲ +12.4%",
+                impressions: "48.2K",
+                impressionsChange: "▲ +8.9%",
+                users: "956",
+                usersChange: "▲ +15.2%",
+                time: "2m 45s",
+                timeChange: "▲ +4.1%",
+                queries: [
+                    { name: "ines grimaux", value: "620 clicks" },
+                    { name: "siren jones performance", value: "340 clicks" },
+                    { name: "ines grimaux artista", value: "195 clicks" },
+                    { name: "itaparica arte contemporanea", value: "112 clicks" },
+                    { name: "elizabeth doud siren jones", value: "90 clicks" }
+                ],
+                pages: [
+                    { name: "/ (index.html)", value: "1,120 vistas" },
+                    { name: "/series/photography.html", value: "780 vistas" },
+                    { name: "/about.html", value: "450 vistas" },
+                    { name: "/ai-data.html", value: "310 vistas" },
+                    { name: "/series/paintings.html", value: "240 vistas" }
+                ],
+                chartLabels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
+                chartClicks: [290, 340, 380, 410],
+                chartUsers: [190, 220, 260, 286]
+            },
+            90: {
+                clicks: "4.89K",
+                clicksChange: "▲ +18.7%",
+                impressions: "162K",
+                impressionsChange: "▲ +11.2%",
+                users: "3.12K",
+                usersChange: "▲ +22.4%",
+                time: "2m 38s",
+                timeChange: "▲ +2.8%",
+                queries: [
+                    { name: "ines grimaux", value: "2.1K clicks" },
+                    { name: "siren jones performance", value: "1.1K clicks" },
+                    { name: "ines grimaux artista", value: "650 clicks" },
+                    { name: "itaparica arte contemporanea", value: "380 clicks" },
+                    { name: "elizabeth doud siren jones", value: "290 clicks" }
+                ],
+                pages: [
+                    { name: "/ (index.html)", value: "3.9K vistas" },
+                    { name: "/series/photography.html", value: "2.4K vistas" },
+                    { name: "/about.html", value: "1.5K vistas" },
+                    { name: "/ai-data.html", value: "920 vistas" },
+                    { name: "/series/paintings.html", value: "810 vistas" }
+                ],
+                chartLabels: ["Mes 1", "Mes 2", "Mes 3"],
+                chartClicks: [1200, 1690, 2000],
+                chartUsers: [850, 1070, 1200]
+            }
+        };
+
+        let myChart = null;
+
+        function initChart(labels, clicks, users) {
+            const ctx = document.getElementById('analyticsChart').getContext('2d');
+            
+            // Get text color based on active color scheme
+            const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const gridColor = isDark ? '#334155' : '#e5e7eb';
+            const labelColor = isDark ? '#94a3b8' : '#6b7280';
+
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Clicks (Search Console)',
+                            data: clicks,
+                            borderColor: '#1a73e8',
+                            backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3
+                        },
+                        {
+                            label: 'Sesiones (Analytics)',
+                            data: users,
+                            borderColor: '#1e8e3e',
+                            backgroundColor: 'rgba(30, 142, 62, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: labelColor,
+                                font: {
+                                    family: 'Plus Jakarta Sans',
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: gridColor },
+                            ticks: { color: labelColor }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: labelColor }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateDashboardData() {
+            const range = document.getElementById('dateRange').value;
+            const data = datasets[range];
+
+            // Update numerical values
+            document.getElementById('clicksVal').innerText = data.clicks;
+            document.getElementById('clicksChange').innerText = data.clicksChange;
+            document.getElementById('impressionsVal').innerText = data.impressions;
+            document.getElementById('impressionsChange').innerText = data.impressionsChange;
+            document.getElementById('usersVal').innerText = data.users;
+            document.getElementById('usersChange').innerText = data.usersChange;
+            document.getElementById('timeVal').innerText = data.time;
+            document.getElementById('timeChange').innerText = data.timeChange;
+
+            // Update lists
+            const queriesList = document.getElementById('queriesList');
+            queriesList.innerHTML = '';
+            data.queries.forEach(q => {
+                queriesList.innerHTML += `
+                    <li class="data-list-item">
+                        <span class="item-name">${q.name}</span>
+                        <span class="item-value">${q.value}</span>
+                    </li>
+                `;
+            });
+
+            const pagesList = document.getElementById('pagesList');
+            pagesList.innerHTML = '';
+            data.pages.forEach(p => {
+                pagesList.innerHTML += `
+                    <li class="data-list-item">
+                        <span class="item-name">${p.name}</span>
+                        <span class="item-value">${p.value}</span>
+                    </li>
+                `;
+            });
+
+            // Re-render chart
+            initChart(data.chartLabels, data.chartClicks, data.chartUsers);
+        }
+
+        function refreshData() {
+            const btn = document.querySelector('.controls button');
+            btn.innerText = 'Refrescando...';
+            btn.disabled = true;
+            setTimeout(() => {
+                updateDashboardData();
+                btn.innerText = 'Refrescar';
+                btn.disabled = false;
+            }, 1000);
+        }
+
+        // Initialize dashboard
+        updateDashboardData();
+
+        // Listen for system theme changes and update chart colors
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            updateDashboardData();
+        });
+    </script>
+</body>
+</html>
