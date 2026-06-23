@@ -1,0 +1,19 @@
+{
+  "name": "ines-grimaux-portfolio",
+  "version": "1.0.0",
+  "description": "Ines Grimaux - Artist Portfolio",
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes serve -l 5500",
+    "preview": "npx --yes serve -l 5500"
+  },
+  "keywords": [
+    "artist",
+    "portfolio",
+    "photography",
+    "sculpture",
+    "art"
+  ],
+  "author": "Ines Grimaux",
+  "license": "MIT"
+}
