@@ -191,7 +191,8 @@
             const subject = formData.get('subject') || 'No Subject';
             const originalMessage = formData.get('mensagem');
             formData.set('mensagem', `[Subject: ${subject}]\n\n${originalMessage}`);
-            
+            formData.append('token', 'sestepa_secure_2026');
+
             fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
