@@ -152,6 +152,10 @@
                     <p data-i18n="contact_desc">For inquiries, commissions, or collaborations, please use the form below or reach out via email.</p>
                     
                     <form class="contact-form" id="portfolio-contact-form">
+                        <!-- Honeypot anti-spam field (hidden from real users) -->
+                        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                            <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off">
+                        </div>
                         <input type="text" name="nome" data-i18n-placeholder="contact_name" placeholder="Name" required>
                         <input type="email" name="email" data-i18n-placeholder="contact_email" placeholder="Email" required>
                         <input type="text" name="subject" data-i18n-placeholder="contact_subject" placeholder="Subject">
@@ -177,6 +181,19 @@
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
+            // Honeypot Anti-Spam Check
+            const honeypot = document.getElementById('website_url');
+            if (honeypot && honeypot.value !== "") {
+                console.log("Spam blocked by honeypot.");
+                // We fake a success message to the bot so it doesn't try other workarounds
+                formResponse.className = 'form-message success';
+                if(i18n && i18n.translations && i18n.translations[i18n.currentLang]) {
+                    formResponse.innerText = i18n.translations[i18n.currentLang]['contact_success'];
+                }
+                contactForm.reset();
+                return;
+            }
+
             // Script URL from Google Apps Script deployment
             const scriptURL = 'https://script.google.com/macros/s/AKfycbyOVk6Jv-nv03iH_jeIoSjvEnVayKAwgLhhFH2j8inGnpg6FBPTi8PoM-F9CdykcOD8Dw/exec';
             
