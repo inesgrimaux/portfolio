@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="https://inesgrimaux.com/inesgrimaux.ico" type="image/x-icon">
     <script src="js/i18n.js" defer></script>
+    <script src="js/consent.js" defer></script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -92,7 +93,12 @@
 
             <div class="footer-nav">
                 <p>&copy; 2026 INES GRIMAUX</p>
-                <p style="margin-top: 5px; font-size: 0.6rem;"><a href="ai-data.html" style="color: #999; text-decoration: none;">AI Data</a></p>
+                <p style="margin-top: 5px; font-size: 0.6rem;">
+                    <a href="privacy-policy.html" data-i18n="footer_privacy" style="color: #999; text-decoration: none;">Privacy</a> ·
+                    <a href="terms-of-use.html" data-i18n="footer_terms" style="color: #999; text-decoration: none;">Terms</a> ·
+                    <a href="cookie-policy.html" data-i18n="footer_cookies" style="color: #999; text-decoration: none;">Cookies</a> ·
+                    <a href="#" onclick="return reopenCookieBanner();" data-i18n="footer_manage_cookies" style="color: #999; text-decoration: none;">Manage Cookies</a>
+                </p>
             </div>
         </aside>
 
@@ -130,18 +136,16 @@
     </div>
 
     <script src="js/script.js" defer></script>
-    <!-- GTM deferred to after page load for performance -->
+    <!-- GTM only loads after cookie consent is accepted (see js/consent.js) -->
     <script>
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            var s = document.createElement('script');
-            s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-56PGJZHS';
-            s.async = true;
-            document.head.appendChild(s);
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-        }, 2000);
-    });
+    window.loadGTM = function() {
+        var s = document.createElement('script');
+        s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-56PGJZHS';
+        s.async = true;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+    };
     </script>
 </body>
 </html>

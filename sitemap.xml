@@ -28,4 +28,16 @@
     <loc>https://inesgrimaux.com/ai-data.html</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://inesgrimaux.com/privacy-policy.html</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://inesgrimaux.com/terms-of-use.html</loc>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://inesgrimaux.com/cookie-policy.html</loc>
+    <priority>0.3</priority>
+  </url>
 </urlset>

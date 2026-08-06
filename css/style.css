@@ -579,3 +579,97 @@ main.content {
         font-size: 1.2rem;
     }
 }
+
+/* Discreet legal links in footer */
+.footer-nav a:hover {
+    color: var(--text-color) !important;
+}
+
+/* Cookie consent banner */
+.cookie-banner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 18px 60px;
+    background: var(--bg-color);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.05);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.cookie-banner.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.cookie-banner p {
+    margin: 0;
+    max-width: 620px;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #555;
+    letter-spacing: 0.2px;
+}
+
+.cookie-banner p a {
+    color: var(--text-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.cookie-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.cookie-banner button {
+    font-family: var(--font-sans);
+    background: none;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    padding: 9px 22px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    white-space: nowrap;
+}
+
+.cookie-banner button.cookie-accept {
+    background: var(--text-color);
+    color: #fff;
+}
+
+.cookie-banner button.cookie-accept:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.cookie-banner button.cookie-reject:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+@media (max-width: 700px) {
+    .cookie-banner {
+        padding: 16px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .cookie-banner-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
