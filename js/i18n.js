@@ -15,8 +15,15 @@ const i18n = {
             const response = await fetch(rootPath + '/translations.json');
             this.translations = await response.json();
             
+            // 0. Check URL query parameter (highest priority)
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlLang = urlParams.get('lang');
+            let savedLang = this.supportedLangs.includes(urlLang) ? urlLang : null;
+            
             // 1. Check local storage
-            let savedLang = localStorage.getItem('preferredLanguage');
+            if (!savedLang) {
+                savedLang = localStorage.getItem('preferredLanguage');
+            }
             
             // 2. If not saved, check browser language
             if (!savedLang) {
