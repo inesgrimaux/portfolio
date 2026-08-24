@@ -52,19 +52,45 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Ines Grimaux",
-      "url": "https://inesgrimaux.com/",
-      "description": "Portfolio of contemporary artist Ines Grimaux.",
-      "publisher": {
-        "@type": "Person",
-        "name": "Ines Grimaux",
-        "url": "https://inesgrimaux.com/",
-        "sameAs": [
-          "https://www.wikidata.org/wiki/Q141161393",
-          "https://www.instagram.com/inesgrimaux/"
-        ]
-      }
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://inesgrimaux.com/#website",
+          "url": "https://inesgrimaux.com/",
+          "name": "Ines Grimaux",
+          "description": "Official website and artwork portfolio of contemporary artist Ines Grimaux.",
+          "publisher": {
+            "@id": "https://inesgrimaux.com/#person"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://inesgrimaux.com/#webpage",
+          "url": "https://inesgrimaux.com/",
+          "name": "Ines Grimaux | Artist Portfolio",
+          "isPartOf": {
+            "@id": "https://inesgrimaux.com/#website"
+          },
+          "about": {
+            "@id": "https://inesgrimaux.com/#person"
+          }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://inesgrimaux.com/#person",
+          "name": "Ines Grimaux",
+          "alternateName": "Inês Grimaux",
+          "url": "https://inesgrimaux.com/",
+          "image": "https://inesgrimaux.com/IMAGENS/og-share-siren-jones.jpg",
+          "description": "Contemporary artist and environmentalist whose multidisciplinary practice spans photography, drawing, painting, and sculpture.",
+          "sameAs": [
+            "https://www.wikidata.org/wiki/Q141161393",
+            "https://www.instagram.com/inesgrimaux/",
+            "https://www.facebook.com/inesgrimaux/",
+            "https://www.escavador.com/sobre/427158/ines-grimaux"
+          ]
+        }
+      ]
     }
     </script>
 </head>
