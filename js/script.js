@@ -182,11 +182,38 @@ function initSlideshow() {
     const slides = document.querySelectorAll('#heroSlideshow .slide');
     if (slides.length === 0) return;
 
+    const loadSlide = (slide) => {
+        if (!slide || !slide.dataset.srcset || slide.querySelector('img')) return;
+        const source = document.createElement('source');
+        source.srcset = slide.dataset.srcset;
+        source.sizes = '(max-width: 800px) 800px, 100vw';
+        source.type = 'image/webp';
+        
+        const img = document.createElement('img');
+        img.src = slide.dataset.src;
+        img.alt = slide.dataset.alt || '';
+        img.width = slide.dataset.width || 1159;
+        img.height = slide.dataset.height || 869;
+        img.decoding = 'async';
+        
+        slide.appendChild(source);
+        slide.appendChild(img);
+    };
+
     let currentSlide = 0;
+    setTimeout(() => {
+        if (slides.length > 1) loadSlide(slides[1]);
+    }, 4000);
     
     setInterval(() => {
+        const nextSlideIndex = (currentSlide + 1) % slides.length;
+        loadSlide(slides[nextSlideIndex]);
+        
         slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }, 5000); // 5 seconds interval
+        slides[nextSlideIndex].classList.add('active');
+        currentSlide = nextSlideIndex;
+        
+        const followingSlideIndex = (currentSlide + 1) % slides.length;
+        loadSlide(slides[followingSlideIndex]);
+    }, 5000);
 }
