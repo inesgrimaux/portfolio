@@ -581,7 +581,35 @@ main.content {
 }
 
 /* Discreet legal links in footer */
-.footer-nav a:hover {
+.footer-legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    margin-top: 5px;
+    font-size: 0.65rem;
+}
+
+.footer-separator {
+    color: #ccc;
+    user-select: none;
+}
+
+.footer-nav a,
+.footer-manage-btn {
+    color: #999;
+    text-decoration: none;
+    font: inherit;
+    background: none;
+    border: none;
+    padding: 4px 2px;
+    cursor: pointer;
+    display: inline-block;
+    transition: color var(--transition-speed);
+}
+
+.footer-nav a:hover,
+.footer-manage-btn:hover {
     color: var(--text-color) !important;
 }
 
