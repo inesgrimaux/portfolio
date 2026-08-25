@@ -581,23 +581,29 @@ main.content {
 }
 
 /* Discreet legal links in footer */
-.footer-legal-links {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px 8px;
-    margin-top: 5px;
-    font-size: 0.65rem;
+.footer-nav p {
+    font-size: 0.72rem;
+    color: #767676;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+}
+
+.footer-nav p.footer-legal-p,
+.footer-nav p.legal-links {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    line-height: 1.6;
 }
 
 .footer-separator {
-    color: #ccc;
+    color: #bbb;
     user-select: none;
+    margin: 0 2px;
 }
 
 .footer-nav a,
 .footer-manage-btn {
-    color: #999;
+    color: #767676;
     text-decoration: none;
     font: inherit;
     font-size: inherit;
