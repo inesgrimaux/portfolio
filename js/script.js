@@ -217,3 +217,4 @@ function initSlideshow() {
         loadSlide(slides[followingSlideIndex]);
     }, 5000);
 }
+

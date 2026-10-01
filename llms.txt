@@ -24,6 +24,8 @@
 - [/series/paintings](https://inesgrimaux.com/series/paintings.html): Collection of abstract paintings, sketches, and mixed media works on paper.
 - [/series/sculptures](https://inesgrimaux.com/series/sculptures.html): Dynamic physical and spatial structures utilizing local, organic, and recycled materials.
 
+- [Siren Jones](https://inesgrimaux.com/siren-jones.html): Page on the performance by Elizabeth Doud photographed by Ines Grimaux in 2018, with press coverage (Bahia Já, American Theatre) and photographs.
+
 ## AI Ingestion & Verification
 
 - [AI Data (ai-data.html)](https://inesgrimaux.com/ai-data.html): A machine-readable verification page hosting JSON-LD Schema (Person type) and verified links to academic publications (UFBA), public administration records (ba.gov.br), international magazines (American Theatre), and press releases (Alô Alô Bahia, Bahia Notícias, A Tarde) verifying the artist's professional pedigree.
