@@ -73,13 +73,7 @@
     "cookies_p6": "If you reject cookies, the Site continues to function normally — no feature depends on analytics cookies. Only the ability to measure aggregated site usage is affected.",
     "cookies_p7": "For questions about this Cookie Policy, contact: inesgrimaux@icloud.com. Last updated: August 6, 2026.",
     "series_drawings_title": "Drawings",
-    "series_drawings_desc": "Faces and creatures on paper napkins and sheets of paper.",
-    "about_casa_title": "Casa Grimaux, Itaparica Island",
-    "about_casa_desc": "A studio and cultural multi-space in Bahia. It also shows work by other artists.",
-    "about_ba_title": "Atelier, Buenos Aires",
-    "about_ba_desc": "A working studio in Buenos Aires, Argentina.",
-    "about_bowie_title": "Bowie",
-    "about_bowie_desc": "Bowie, a white cat, in Itaparica."
+    "series_drawings_desc": "Faces and creatures on paper napkins and sheets of paper."
   },
   "es": {
     "nav_home": "Inicio",
@@ -155,13 +149,7 @@
     "cookies_p6": "Si rechaza las cookies, el Sitio sigue funcionando con normalidad: ninguna función depende de las cookies analíticas. Solo se ve afectada la posibilidad de medir el uso agregado del Sitio.",
     "cookies_p7": "Para consultas sobre esta Política de Cookies, escriba a: inesgrimaux@icloud.com. Última actualización: 6 de agosto de 2026.",
     "series_drawings_title": "Dibujos",
-    "series_drawings_desc": "Rostros y criaturas sobre servilletas de papel y hojas de papel.",
-    "about_casa_title": "Casa Grimaux, Isla de Itaparica",
-    "about_casa_desc": "Un taller y espacio cultural multiuso en Bahía. También muestra obras de otros artistas.",
-    "about_ba_title": "Taller, Buenos Aires",
-    "about_ba_desc": "Un taller de trabajo en Buenos Aires, Argentina.",
-    "about_bowie_title": "Bowie",
-    "about_bowie_desc": "Bowie, un gato blanco, en Itaparica."
+    "series_drawings_desc": "Rostros y criaturas sobre servilletas de papel y hojas de papel."
   },
   "pt": {
     "nav_home": "Início",
@@ -237,12 +225,6 @@
     "cookies_p6": "Se você recusar os cookies, o Site continua funcionando normalmente — nenhuma funcionalidade depende de cookies analíticos. Apenas a possibilidade de medir o uso agregado do Site é afetada.",
     "cookies_p7": "Para dúvidas sobre esta Política de Cookies, escreva para: inesgrimaux@icloud.com. Última atualização: 6 de agosto de 2026.",
     "series_drawings_title": "Desenhos",
-    "series_drawings_desc": "Rostos e criaturas sobre guardanapos de papel e folhas de papel.",
-    "about_casa_title": "Casa Grimaux, Ilha de Itaparica",
-    "about_casa_desc": "Um ateliê e multiespaço cultural na Bahia. Também expõe obras de outros artistas.",
-    "about_ba_title": "Ateliê, Buenos Aires",
-    "about_ba_desc": "Um ateliê de trabalho em Buenos Aires, Argentina.",
-    "about_bowie_title": "Bowie",
-    "about_bowie_desc": "Bowie, um gato branco, em Itaparica."
+    "series_drawings_desc": "Rostos e criaturas sobre guardanapos de papel e folhas de papel."
   }
 }
