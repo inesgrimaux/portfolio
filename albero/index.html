@@ -80,23 +80,19 @@
       background: #13161d;
       border: 1px solid #202532;
       border-radius: 6px;
-      padding: 1.2rem 1.8rem;
+      padding: 0.9rem 1.8rem;
       max-width: 850px;
       margin: 0 auto 3rem;
       text-align: center;
     }
     .daughter-banner h2 {
       font-family: var(--font-serif);
-      color: #ffffff;
-      font-size: 1.25rem;
-      font-weight: 400;
-      letter-spacing: 0.03em;
-      margin-bottom: 0.35rem;
-    }
-    .daughter-banner p {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      line-height: 1.5;
+      color: var(--accent-light);
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: 0;
     }
 
     /* Timeline container */
@@ -281,8 +277,7 @@
   </div>
 
   <div id="banner" class="daughter-banner">
-    <h2 id="banner-title">Inés Grimaux</h2>
-    <p id="banner-desc">Timeline</p>
+    <h2 id="banner-title">TIMELINE</h2>
   </div>
 
   <div class="timeline" id="timeline">
@@ -932,33 +927,22 @@
       const ines = document.querySelector('.ines-node');
       const sofia = document.querySelector('.sofia-node');
 
-      const title = document.getElementById('banner-title');
-      const desc = document.getElementById('banner-desc');
-
       if (daughter === 'vitoria') {
         vitoria.style.display = 'flex';
         ines.style.display = 'none';
         sofia.style.display = 'none';
-        title.innerText = 'Vitória Carolina (1998)';
-        desc.innerText = 'Timeline';
       } else if (daughter === 'ines') {
         vitoria.style.display = 'none';
         ines.style.display = 'flex';
         sofia.style.display = 'none';
-        title.innerText = 'Inês Odilia (1999)';
-        desc.innerText = 'Timeline';
       } else if (daughter === 'sofia') {
         vitoria.style.display = 'none';
         ines.style.display = 'none';
         sofia.style.display = 'flex';
-        title.innerText = 'Sofia Helena (2001)';
-        desc.innerText = 'Timeline';
       } else {
         vitoria.style.display = 'flex';
         ines.style.display = 'flex';
         sofia.style.display = 'flex';
-        title.innerText = 'Inés Grimaux';
-        desc.innerText = 'Timeline';
       }
     }
 
