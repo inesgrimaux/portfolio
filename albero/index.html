@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Albero Genealógico Grimaux | Dossiê Histórico e Galeria</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card-bg: #181b22;
+      --card-border: #272c38;
+      --accent: #c5a059;
+      --accent-light: #e5c88b;
+      --text: #e6e8ec;
+      --text-muted: #9aa0ad;
+      --font-serif: "Cinzel", "Georgia", "Times New Roman", serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 0 1rem 4rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 3.5rem 1.5rem 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: #ffffff;
+      letter-spacing: 0.04em;
+      line-height: 1.35;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Tabs selector */
+    .daughter-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 1.8rem auto 2.5rem;
+      max-width: 850px;
+    }
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.65rem 1.3rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    .tab-btn:hover {
+      border-color: #3e4556;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .tab-btn.active {
+      background: var(--card-bg);
+      border-color: var(--accent);
+      color: var(--accent-light);
+      font-weight: 500;
+    }
+
+    .daughter-banner {
+      background: #13161d;
+      border: 1px solid #202532;
+      border-radius: 6px;
+      padding: 1.2rem 1.8rem;
+      max-width: 850px;
+      margin: 0 auto 3rem;
+      text-align: center;
+    }
+    .daughter-banner h2 {
+      font-family: var(--font-serif);
+      color: #ffffff;
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.35rem;
+    }
+    .daughter-banner p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    /* Timeline container */
+    .timeline {
+      max-width: 1050px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 30px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--card-border));
+    }
+    @media (min-width: 768px) {
+      .timeline::before { left: 50%; transform: translateX(-50%); }
+    }
+
+    .node {
+      position: relative;
+      margin-bottom: 2.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 768px) {
+      .node {
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+      .node:nth-child(even) {
+        flex-direction: row-reverse;
+      }
+    }
+
+    .node-num {
+      position: absolute;
+      left: 14px;
+      top: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      color: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+      z-index: 2;
+    }
+    @media (min-width: 768px) {
+      .node-num { left: 50%; transform: translateX(-50%); }
+    }
+
+    .node-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-left: 60px;
+      width: calc(100% - 60px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .node-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(197, 160, 89, 0.5);
+    }
+    @media (min-width: 768px) {
+      .node-card {
+        margin-left: 0;
+        width: 44%;
+      }
+    }
+
+    .node-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+    .node-era {
+      font-size: 0.78rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+    .node-dates {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .node-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 0.35rem;
+      line-height: 1.35;
+    }
+    .node-spouse {
+      font-size: 0.95rem;
+      color: var(--accent-light);
+      margin-bottom: 0.75rem;
+    }
+    .node-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 1rem;
+    }
+
+    /* Images grid in card */
+    .node-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+    .node-gallery img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .node-gallery img:hover {
+      transform: scale(1.08);
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.88);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+    .modal.active { display: flex; }
+    .modal img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 6px;
+      border: 2px solid var(--accent);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Guilherme I, o Conquistador (1028) até Inés Grimaux (Geração 32)</h1>
+  </header>
+
+  <div class="daughter-tabs">
+    <button class="tab-btn active" onclick="filterDaughter('all')">Inés V Grimaux</button>
+    <button class="tab-btn" onclick="filterDaughter('vitoria')">Vitória Carolina (1998)</button>
+    <button class="tab-btn" onclick="filterDaughter('ines')">Inês Odilia (1999)</button>
+    <button class="tab-btn" onclick="filterDaughter('sofia')">Sofia Helena (2001)</button>
+  </div>
+
+  <div id="banner" class="daughter-banner">
+    <h2 id="banner-title">Timeline Ines Grimaux 32 gerações</h2>
+    <p id="banner-desc">Linhagem direta documentada desde Guilherme I, o Conquistador até a artista contemporânea Inés Grimaux e suas filhas, com raízes nos Duques da Normandia desde Rollo (860).</p>
+  </div>
+
+  <div class="timeline" id="timeline">
+
+    <!-- Ancestral V -->
+    <div class="node">
+      <div class="node-num" style="font-size: 0.72rem; letter-spacing: 0;">V</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Tetravô de Guilherme • Fundação da Normandia</span>
+          <span class="node-dates">c. 860 – c. 932</span>
+        </div>
+        <h3 class="node-title">Rollo (Rolão / Göngu-Hrólfr)</h3>
+        <p class="node-spouse">& Poppa de Bayeux</p>
+        <p class="node-desc">Jarl viking norueguês. Em 911, através do Tratado de Saint-Clair-sur-Epte com o rei Carlos III da França, fundou o Ducado da Normandia e tornou-se o 1º governante normando de Ruão.</p>
+        <div class="node-gallery">
+          <img src="img/the rollo_monument_alesund_10_july_2008_large.jpg" alt="Monumento de Rollo em Ålesund" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Ancestral IV -->
+    <div class="node">
+      <div class="node-num" style="font-size: 0.72rem; letter-spacing: 0;">IV</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Trisavô de Guilherme • Ducado da Normandia</span>
+          <span class="node-dates">c. 893 – 942</span>
+        </div>
+        <h3 class="node-title">Guilherme I Espada-Longa (Longue-Épée)</h3>
+        <p class="node-spouse">& Sprota de Bretanha</p>
+        <p class="node-desc">2º governante da Normandia. Consolidou as fronteiras normandas, expandindo o território até o Cotentin e as Ilhas do Canal.</p>
+      </div>
+    </div>
+
+    <!-- Ancestral III -->
+    <div class="node">
+      <div class="node-num" style="font-size: 0.72rem; letter-spacing: 0;">III</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Bisavô de Guilherme • Ducado da Normandia</span>
+          <span class="node-dates">933 – 996</span>
+        </div>
+        <h3 class="node-title">Richard I, Sem Medo (Sans-Peur)</h3>
+        <p class="node-spouse">& Gunnora de Crépon (c. 950 – 1031)</p>
+        <p class="node-desc">Primeiro a adotar formalmente o título de Duque da Normandia. Reinou por mais de cinquenta anos, estabelecendo as bases do feudalismo e do poder dinástico normando.</p>
+      </div>
+    </div>
+
+    <!-- Ancestral II -->
+    <div class="node">
+      <div class="node-num" style="font-size: 0.72rem; letter-spacing: 0;">II</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Avô de Guilherme • Ducado da Normandia</span>
+          <span class="node-dates">963 – 1026</span>
+        </div>
+        <h3 class="node-title">Richard II, o Bom (Le Bon)</h3>
+        <p class="node-spouse">& Judith da Bretanha (982 – 1017)</p>
+        <p class="node-desc">4º Duque da Normandia. Grande patrono das abadias beneditinas e articulador dinástico internacional; sua irmã Emma foi Rainha da Inglaterra.</p>
+      </div>
+    </div>
+
+    <!-- Ancestral I -->
+    <div class="node">
+      <div class="node-num" style="font-size: 0.72rem; letter-spacing: 0;">I</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Pai de Guilherme • Ducado da Normandia</span>
+          <span class="node-dates">1000 – 1035</span>
+        </div>
+        <h3 class="node-title">Robert I, o Magnífico (Le Magnifique)</h3>
+        <p class="node-spouse">& Herleva de Falaise (c. 1003 – c. 1050)</p>
+        <p class="node-desc">6º Duque da Normandia. Protetor dos príncipes saxões exilados e peregrino da Terra Santa. Pai de Guilherme, o Conquistador.</p>
+      </div>
+    </div>
+
+    <!-- 1 -->
+    <div class="node">
+      <div class="node-num">1</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Normandia & Inglaterra</span>
+          <span class="node-dates">1028 – 1087</span>
+        </div>
+        <h3 class="node-title">Guilherme I, o Conquistador</h3>
+        <p class="node-spouse">& Matilde de Flandres (1031 – 1083)</p>
+        <p class="node-desc">1º Rei Normando da Inglaterra (1066) e Duque da Normandia. Conquistou a Inglaterra na histórica Batalha de Hastings.</p>
+        <div class="node-gallery">
+          <img src="img/Matilda-flanders_sm_large.jpg" alt="Matilde de Flandres" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="node">
+      <div class="node-num">2</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Reino da Inglaterra</span>
+          <span class="node-dates">1068 – 1135</span>
+        </div>
+        <h3 class="node-title">Henrique I de Inglaterra (Beauclerc)</h3>
+        <p class="node-spouse">& Matilda da Escócia (1080 – 1118)</p>
+        <p class="node-desc">Filho de Guilherme o Conquistador. Matilda da Escócia traz a linhagem dos reis anglo-saxões de Wessex e reis da Escócia (Santa Margarida e Kenneth MacAlpin).</p>
+        <div class="node-gallery">
+          <img src="img/henrique i rei da inglaterra.jpg" alt="Henrique I" onclick="openModal(this.src)">
+          <img src="img/Matilda of Scotland.jpg" alt="Matilda da Escócia" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="node">
+      <div class="node-num">3</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Dinastia Plantageneta</span>
+          <span class="node-dates">1102 – 1167</span>
+        </div>
+        <h3 class="node-title">Imperatriz Matilda (Maud)</h3>
+        <p class="node-spouse">& Geoffroy V Plantagenet (1113 – 1151)</p>
+        <p class="node-desc">Imperatriz consorte do Sacro Império e Senhora dos Ingleses. Geoffroy V, Conde de Anjou, é o patriarca e fundador nominal da Casa Plantageneta.</p>
+        <div class="node-gallery">
+          <img src="img/Empress Matilda.jpg" alt="Imperatriz Matilda" onclick="openModal(this.src)">
+          <img src="img/Geoffroy V, Count of Anjou, Maine and Mortain.jpg" alt="Geoffroy V" onclick="openModal(this.src)">
+          <img src="img/king-foulques_large- Fulk V, King of Jerusalem.jpg" alt="Fulk V" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="node">
+      <div class="node-num">4</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Império Angevino</span>
+          <span class="node-dates">1133 – 1189</span>
+        </div>
+        <h3 class="node-title">Henrique II Plantagenet</h3>
+        <p class="node-spouse">& Leonor da Aquitânia (1122 – 1204)</p>
+        <p class="node-desc">Rei da Inglaterra e Duque da Normandia e Aquitânia. Leonor foi Duquesa da Aquitânia, Rainha de França e de Inglaterra.</p>
+        <div class="node-gallery">
+          <img src="img/Henry II King of England.jpg" alt="Henrique II" onclick="openModal(this.src)">
+          <img src="img/alienor reine de france e angleterre.jpg" alt="Leonor da Aquitânia" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="node">
+      <div class="node-num">5</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Reino de Castela</span>
+          <span class="node-dates">1162 – 1214</span>
+        </div>
+        <h3 class="node-title">Leonor de Inglaterra (Plantageneta)</h3>
+        <p class="node-spouse">& Rei Alfonso VIII de Castela (1155 – 1214)</p>
+        <p class="node-desc">Rainha consorte de Castela. Alfonso VIII foi o célebre vencedor da histórica Batalha de Las Navas de Tolosa (1212).</p>
+        <div class="node-gallery">
+          <img src="img/afonso VIII_castela_large.jpg" alt="Alfonso VIII" onclick="openModal(this.src)">
+          <img src="img/leonor da inglaterra_plantagenta_large.jpg" alt="Leonor de Inglaterra" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="node">
+      <div class="node-num">6</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Castela & Leão</span>
+          <span class="node-dates">1180 – 1246</span>
+        </div>
+        <h3 class="node-title">Rainha Berenguela de Castela</h3>
+        <p class="node-spouse">& Rei Alfonso IX de Leão (1171 – 1230)</p>
+        <p class="node-desc">Rainha reinante de Castela e Rainha consorte de Leão. Artífice da unificação política permanente dos dois reinos ibéricos.</p>
+        <div class="node-gallery">
+          <img src="img/Reina de Castilla Berengaria de Castilla.jpg" alt="Berenguela de Castela" onclick="openModal(this.src)">
+          <img src="img/afonso_ix_rei_de_leao_e_castela_large.jpg" alt="Alfonso IX de Leão" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="node">
+      <div class="node-num">7</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Reino Santo & Bizâncio</span>
+          <span class="node-dates">1199 – 1252</span>
+        </div>
+        <h3 class="node-title">São Fernando III de Castela e Leão</h3>
+        <p class="node-spouse">& Beatriz da Suábia (1205 – 1235)</p>
+        <p class="node-desc">Rei Santo de Castela. Beatriz da Suábia pertencia à Dinastia imperial Hohenstaufen, filha de Filipe da Suábia e neta do Imperador Bizantino Isaac II Angelos.</p>
+        <div class="node-gallery">
+          <img src="img/Sao Fernando III Rei de Castela.jpg" alt="São Fernando III" onclick="openModal(this.src)">
+          <img src="img/Beatrix da Swabia, queen consort of Castile.jpg" alt="Beatriz da Suábia" onclick="openModal(this.src)">
+          <img src="img/Philip_of_Swabia_large.jpg" alt="Filipe da Suábia" onclick="openModal(this.src)">
+          <img src="img/Isaac II Angelos, Byzantine Emperor.jpg" alt="Isaac II Angelos" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="node">
+      <div class="node-num">8</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Senhorio de Villena</span>
+          <span class="node-dates">1234 – 1283</span>
+        </div>
+        <h3 class="node-title">Infante Don Manuel de Castela</h3>
+        <p class="node-spouse">& Beatriz de Saboia (1250 – 1292)</p>
+        <p class="node-desc">Filho de São Fernando III. Fundador da Casa Manuel e Senhor de Villena, Escalona e Peñafiel. Beatriz é filha de Amadeu IV, Conde de Saboia.</p>
+        <div class="node-gallery">
+          <img src="img/D. Manuel de Castela, Senhor de Villena e de Escalona.jpg" alt="Infante Manuel" onclick="openModal(this.src)">
+          <img src="img/D. Beatrice de Savoie.jpg" alt="Beatriz de Saboia" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="node">
+      <div class="node-num">9</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Principado de Villena</span>
+          <span class="node-dates">1282 – 1348</span>
+        </div>
+        <h3 class="node-title">Príncipe de Villena D. Juan de Castilla</h3>
+        <p class="node-spouse">& Inês de Castañeda</p>
+        <p class="node-desc">Príncipe de Villena, Duque de Peñafiel, grande estadista e autor da obra-prima literária 'El Conde Lucanor'.</p>
+        <div class="node-gallery">
+          <img src="img/D. Juan de Castilla, Principe de Villena.jpg" alt="Don Juan Manuel" onclick="openModal(this.src)">
+          <img src="img/castillo_de_escalona__large.jpg" alt="Castelo de Escalona" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="node">
+      <div class="node-num">10</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Reino de Portugal</span>
+          <span class="node-dates">c. 1337 – 1414</span>
+        </div>
+        <h3 class="node-title">Conde de Seia D. Henrique Manuel de Vilhena</h3>
+        <p class="node-spouse">& Beatriz de Sousa (1350 – Deceduta)</p>
+        <p class="node-desc">1º Conde de Seia e Sintra, Senhor de Montealegre e Meneses. Filho de Don Juan Manuel acolhido em Portugal; faleceu em Guadalajara a 8 de novembro de 1414.</p>
+        <div class="node-gallery">
+          <img src="img/D. Henrique Manuel de Villena, Conde de Seia.jpg" alt="Henrique Manuel" onclick="openModal(this.src)">
+          <img src="img/Beatriz de Souza - Brites.jpg" alt="Beatriz de Sousa" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="node">
+      <div class="node-num">11</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Senhorio de Basto</span>
+          <span class="node-dates">1380 – Deceduta</span>
+        </div>
+        <h3 class="node-title">Branca Manoel de Vilhena</h3>
+        <p class="node-spouse">& 2º senhor de Basto Fernão Vasques da Cunha (1380 – Deceduto)</p>
+        <p class="node-desc">Fidalga da Casa Manuel de Vilhena unida a uma das mais antigas linhagens senhoriais do norte português.</p>
+        <div class="node-gallery">
+          <img src="img/branca manoel de vilhena.jpg" alt="Branca Manuel" onclick="openModal(this.src)">
+          <img src="img/Fernão Vasques da Cunha, 2º senhor de Basto.jpg" alt="Fernão Vaz da Cunha" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="node">
+      <div class="node-num">12</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Ferreira de Aves & Leomil</span>
+          <span class="node-dates">1400 – Deceduta</span>
+        </div>
+        <h3 class="node-title">3ª senhora de Basto Maria da Cunha</h3>
+        <p class="node-spouse">& Senhor do Couto de Leomil Fernão Coutinho (1390 – 1497)</p>
+        <p class="node-desc">Aliança entre as casas da Cunha e Coutinho, Senhores de Leomil e Ferreira de Aves.</p>
+        <div class="node-gallery">
+          <img src="img/Maria da Cunha, 3ª senhora de Basto.jpg" alt="Maria da Cunha" onclick="openModal(this.src)">
+          <img src="img/Fernao Coutinho, Senhor do Couto de Leomil.jpg" alt="Fernão Coutinho" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="node">
+      <div class="node-num">13</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Casa de Marialva</span>
+          <span class="node-dates">1440 – Deceduto</span>
+        </div>
+        <h3 class="node-title">Vasco Fernandes Coutinho</h3>
+        <p class="node-spouse">& Maria de Lima (1440 – Deceduta)</p>
+        <p class="node-desc">Fidalgo da Casa de Celorico de Basto e Marialva. Maria de Lima é filha de Leonel de Lima, 1º Visconde de Vila Nova de Cerveira.</p>
+        <div class="node-gallery">
+          <img src="img/Vasco Fernandes Coutinho.jpg" alt="Vasco Fernandes Coutinho" onclick="openModal(this.src)">
+          <img src="img/Maria de Lima.jpg" alt="Maria de Lima" onclick="openModal(this.src)">
+          <img src="img/Maria de Lima sepultura.jpg" alt="Túmulo Maria de Lima" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="node">
+      <div class="node-num">14</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Alcaidaria de Serpa</span>
+          <span class="node-dates">1480 – 1563</span>
+        </div>
+        <h3 class="node-title">Branca Coutinho</h3>
+        <p class="node-spouse">& Jorge de Melo, o Lagio (1460 – 1534)</p>
+        <p class="node-desc">União fundamental que gerou o Donatário do Brasil. Pais de Vasco Fernandes de Melo Coutinho.</p>
+        <div class="node-gallery">
+          <img src="img/Martim Afonso de Melo.jpg" alt="Casa de Melo" onclick="openModal(this.src)">
+          <img src="img/Leonor Barreto.jpg" alt="Leonor Barreto" onclick="openModal(this.src)">
+          <img src="img/Brasao de Melo.jpg" alt="Brasão de Melo" onclick="openModal(this.src)">
+          <img src="img/brasao coutinho.jpg" alt="Brasão Coutinho" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="node">
+      <div class="node-num">15</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Brasil Colonial</span>
+          <span class="node-dates">1490 – 1561</span>
+        </div>
+        <h3 class="node-title">1º Donatário de Espírito Santo Vasco Fernandes Coutinho</h3>
+        <p class="node-spouse">& Ana Vaz Almada (1504 – 1582)</p>
+        <p class="node-desc">1º Capitão-Donatário da Capitania do Espírito Santo (Brasil). Fundador de Vila Velha e Vitória. Fidalgo da Casa Real e herói militar na Índia.</p>
+        <div class="node-gallery">
+          <img src="img/vasco_fernandes_coutinho_large.jpg" alt="Vasco Fernandes Coutinho" onclick="openModal(this.src)">
+          <img src="img/BrasãodeVascoCoutinho.png" alt="Brasão do Donatário" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 16 -->
+    <div class="node">
+      <div class="node-num">16</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Capitania do Espírito Santo</span>
+          <span class="node-dates">c. 1530 – 1589</span>
+        </div>
+        <h3 class="node-title">2º Donatário Vasco Fernandes Coutinho, "o Filho"</h3>
+        <p class="node-spouse">& Joana de Carvalho</p>
+        <p class="node-desc">2º Capitão-Donatário do Espírito Santo, filho do 1º Donatário Vasco Fernandes Coutinho e Ana Vaz de Almada. Pais do povoador e magistrado João de Melo Coutinho e Carvalho.</p>
+      </div>
+    </div>
+
+    <!-- 17 -->
+    <div class="node">
+      <div class="node-num">17</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Sucre & Buenos Aires</span>
+          <span class="node-dates">1571 – 1601 / 1561 – 1628</span>
+        </div>
+        <h3 class="node-title">João de Melo Coutinho e Carvalho (1571 – 1601)</h3>
+        <p class="node-spouse">& Juana Holguín de Ulloa (1561 – 1628)</p>
+        <p class="node-desc">Nascido no Espírito Santo; Regedor e Alcalde de Buenos Aires. Juana é filha do conquistador Martín de Almendras e Constanza de Orellana Holguín, e neta materna do Maestre de Campo Pedro Álvarez Holguín e da nobre inca Beatriz Túpac Yupanqui.</p>
+        <div class="node-gallery">
+          <img src="img/Pedro Alvarez de Holguin de Ulloa.jpg" alt="Pedro Álvarez Holguín" onclick="openModal(this.src)">
+          <img src="img/tupac_yupanqui_large.jpg" alt="Túpac Yupanqui" onclick="openModal(this.src)">
+          <img src="img/Rauna_Ocllo_11_large.jpg" alt="Raura Ocllo" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 18 -->
+    <div class="node">
+      <div class="node-num">18</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Fundadores de Buenos Aires</span>
+          <span class="node-dates">1593 – 1674 / 1594 – 1693</span>
+        </div>
+        <h3 class="node-title">Francisco de Melo Coutiño y Holguín (1593 – 1674)</h3>
+        <p class="node-spouse">& Juana Gómez de Saravia (1594 – 1693)</p>
+        <p class="node-desc">Patriciado inicial de Buenos Aires; redigiu testamento a 18/11/1673 e faleceu a 18/11/1674. Juana Gómez de Saravia é bisneta do fundador Juan de Garay.</p>
+        <div class="node-gallery">
+          <img src="img/Parcelamiento_de_Buenos_Aires_(Garay,_1580).jpg" alt="Planta de Buenos Aires 1580" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 19 -->
+    <div class="node">
+      <div class="node-num">19</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Buenos Aires Colonial</span>
+          <span class="node-dates">1627 – 1694 / 1644 – 1730</span>
+        </div>
+        <h3 class="node-title">Simón de Melo Coutinho y Gómez de Saravia (1627 – 1694)</h3>
+        <p class="node-spouse">& Juana de Rivera y Linares de Melo Coutinho (1644 – 1730)</p>
+        <p class="node-desc">Alcalde do Cabildo e fidalgo de Buenos Aires, membro de destaque da elite capitular colonial.</p>
+      </div>
+    </div>
+
+    <!-- 20 -->
+    <div class="node">
+      <div class="node-num">20</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Século XVII – XVIII</span>
+          <span class="node-dates">c. 1655 – 1723 / 1666 – 1755</span>
+        </div>
+        <h3 class="node-title">Leonor de Melo-Coutinho y Rivera (1666 – 1755)</h3>
+        <p class="node-spouse">& Salvador Carrasco y Fernández de los Cobos (c. 1655 – 1723)</p>
+        <p class="node-desc">Nascida em Buenos Aires a 6 de janeiro de 1666 e casada em 1681 na Basílica da Merced com o capitão Salvador Carrasco (natural de Málaga). Matriarca de ilustre descendência rioplatense.</p>
+      </div>
+    </div>
+
+    <!-- 21 -->
+    <div class="node">
+      <div class="node-num">21</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Século XVII – XVIII</span>
+          <span class="node-dates">1681 – 1778 / 1690 – 1763</span>
+        </div>
+        <h3 class="node-title">María Leonor Carrasco y Melo Coutinho (1690 – 1763)</h3>
+        <p class="node-spouse">& Manuel de Escobar y Bazán (1681 – 1778)</p>
+        <p class="node-desc">Filha de Salvador Carrasco e Leonor de Melo Coutinho. Manuel de Escobar é filho de Juan de Escobar y Hurtado de Mendoza (1622) e Juana de Bazán y Ávalos (1644).</p>
+      </div>
+    </div>
+
+    <!-- 22 -->
+    <div class="node">
+      <div class="node-num">22</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Século XVIII</span>
+          <span class="node-dates">1714 – 1758 / 1715</span>
+        </div>
+        <h3 class="node-title">Margarita Jacinta de Escobar Carrasco (1715 – Deceduta)</h3>
+        <p class="node-spouse">& Cap. Juan Agustín de Cueli y Lozano (1714 – 1758)</p>
+        <p class="node-desc">Aliança entre as casas de Escobar Carrasco e Cueli em Buenos Aires colonial.</p>
+      </div>
+    </div>
+
+    <!-- 23 -->
+    <div class="node">
+      <div class="node-num">23</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Vice-Reino do Prata</span>
+          <span class="node-dates">1725 – 1776 / 1743</span>
+        </div>
+        <h3 class="node-title">Juana Petrona Cueli Escobar (1743 – Deceduta)</h3>
+        <p class="node-spouse">& Jacobo (o Jacinto) Felipe José Eustaquio Gómez de la Blanca (1725 – 1776)</p>
+        <p class="node-desc">Casados em 1759 em Buenos Aires. Pais também do Dr. José Valentín Gómez Cueli, Reitor da UBA e congressista de Tucumán.</p>
+      </div>
+    </div>
+
+    <!-- 24 -->
+    <div class="node">
+      <div class="node-num">24</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Buenos Aires</span>
+          <span class="node-dates">1748 – Deceduto / 1760</span>
+        </div>
+        <h3 class="node-title">Josefa Florentina Gómez Cueli (1760 – Deceduta)</h3>
+        <p class="node-spouse">& Cap. Miguel González de Noriega (1748 – Deceduto)</p>
+        <p class="node-desc">Miguel González de Noriega, asturiano de Pendueles, foi Regedor do Cabildo de Buenos Aires em 1787 e 1791.</p>
+      </div>
+    </div>
+
+    <!-- 25 -->
+    <div class="node">
+      <div class="node-num">25</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Revolução de Maio</span>
+          <span class="node-dates">1773 – 1841 / 1781</span>
+        </div>
+        <h3 class="node-title">María Ramona González de Noriega Gómez Cueli (1781 – Deceduta)</h3>
+        <p class="node-spouse">& Juan Fernández Molina Obregón (1773 – 1841)</p>
+        <p class="node-desc">Transição para o período de emancipação e organização nacional argentina.</p>
+        <div class="node-gallery">
+          <img src="img/Maria Ramona Gonzalez de Noriega Gomez Cueli.jpg" alt="Família González de Noriega" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 26 -->
+    <div class="node">
+      <div class="node-num">26</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Século XIX</span>
+          <span class="node-dates">1805 / 1812</span>
+        </div>
+        <h3 class="node-title">Miguel Jerónimo Molina González de Noriega</h3>
+        <p class="node-spouse">& Ana Regueira Díaz (1812 – Deceduta)</p>
+        <p class="node-desc">Patriciado portenho do século XIX.</p>
+      </div>
+    </div>
+
+    <!-- 27 -->
+    <div class="node">
+      <div class="node-num">27</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">República Argentina</span>
+          <span class="node-dates">c. 1845 – ?</span>
+        </div>
+        <h3 class="node-title">Manuel Onésimo Molina Regueira</h3>
+        <p class="node-spouse">& Amélie Delaplace Sosa</p>
+        <p class="node-desc">Diplomata e membro da comitiva oficial do presidente Bartolomé Mitre na missão ao Brasil em 1872.</p>
+        <div class="node-gallery">
+          <img src="img/manuel onesimo molina regueira.jpg" alt="Manuel Onésimo Molina" onclick="openModal(this.src)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 28 -->
+    <div class="node">
+      <div class="node-num">28</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Arrecifes & Buenos Aires</span>
+          <span class="node-dates">1884 – ?</span>
+        </div>
+        <h3 class="node-title">Ernestina Rita Molina Delaplace</h3>
+        <p class="node-spouse">& Adolfo Herrán Blanco</p>
+        <p class="node-desc">Nascida em Arrecifes em 1884; casados em Buenos Aires a 7 de novembro de 1907.</p>
+      </div>
+    </div>
+
+    <!-- 29 -->
+    <div class="node">
+      <div class="node-num">29</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Buenos Aires</span>
+          <span class="node-dates">1910 – 1982 / 1911</span>
+        </div>
+        <h3 class="node-title">Carlos Manuel Herrán Molina (1910 – 1982)</h3>
+        <p class="node-spouse">& Clemencia Marta Encina López Lecube (1911 – Deceduta)</p>
+        <p class="node-desc">Carlos Manuel nasceu em Buenos Aires em 1910 e faleceu em 1982; Clemencia Marta Encina López Lecube nasceu em Buenos Aires em 1911. Pais de Odilia Marta Herrán.</p>
+      </div>
+    </div>
+
+    <!-- 30 -->
+    <div class="node">
+      <div class="node-num">30</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Buenos Aires</span>
+          <span class="node-dates">1939 – 1972 / 1940</span>
+        </div>
+        <h3 class="node-title">Odilia Marta Herrán (1940 – presente)</h3>
+        <p class="node-spouse">& Jorge Adolfo Grimaux (1939 – 1972)</p>
+        <p class="node-desc">Odilia Marta nasceu em Buenos Aires em 1940; Jorge Adolfo Grimaux nasceu em 1939 e faleceu em 1972. Pais da artista visual Inés Grimaux.</p>
+      </div>
+    </div>
+
+    <!-- 31 -->
+    <div class="node">
+      <div class="node-num">31</div>
+      <div class="node-card">
+        <div class="node-header">
+          <span class="node-era">Geração Matriz Artística</span>
+          <span class="node-dates">1968</span>
+        </div>
+        <h3 class="node-title">Inés Grimaux</h3>
+        <p class="node-spouse">& Sir John John Ebner</p>
+        <p class="node-desc">Artista visual contemporânea (n. 1968), ponto de confluência genealógica e mãe das três herdeiras da linhagem.</p>
+      </div>
+    </div>
+
+    <!-- 32 - Vitória -->
+    <div class="node daughter-node vitoria-node">
+      <div class="node-num">32</div>
+      <div class="node-card" style="border-color: var(--accent);">
+        <div class="node-header">
+          <span class="node-era" style="color: var(--accent-light);">Geração 32 • Primogênita</span>
+          <span class="node-dates">1998</span>
+        </div>
+        <h3 class="node-title" style="color: var(--accent-light);">Vitória Carolina Grimaux Ebner</h3>
+        <p class="node-spouse">Nascida em 1998</p>
+        <p class="node-desc">Herdeira e 32ª geração direta documentada desde Guilherme I, o Conquistador.</p>
+      </div>
+    </div>
+
+    <!-- 32 - Inês Odilia -->
+    <div class="node daughter-node ines-node" style="display: none;">
+      <div class="node-num">32</div>
+      <div class="node-card" style="border-color: var(--accent);">
+        <div class="node-header">
+          <span class="node-era" style="color: var(--accent-light);">Geração 32 • Segunda Filha</span>
+          <span class="node-dates">1999</span>
+        </div>
+        <h3 class="node-title" style="color: var(--accent-light);">Inês Odilia Grimaux Ebner</h3>
+        <p class="node-spouse">Nascida em 1999</p>
+        <p class="node-desc">Herdeira e 32ª geração direta documentada desde Guilherme I, o Conquistador.</p>
+      </div>
+    </div>
+
+    <!-- 32 - Sofia Helena -->
+    <div class="node daughter-node sofia-node" style="display: none;">
+      <div class="node-num">32</div>
+      <div class="node-card" style="border-color: var(--accent);">
+        <div class="node-header">
+          <span class="node-era" style="color: var(--accent-light);">Geração 32 • Caçula</span>
+          <span class="node-dates">2001</span>
+        </div>
+        <h3 class="node-title" style="color: var(--accent-light);">Sofia Helena Grimaux Ebner</h3>
+        <p class="node-spouse">Nascida em 2001</p>
+        <p class="node-desc">Herdeira e 32ª geração direta documentada desde Guilherme I, o Conquistador.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal" id="modal" onclick="closeModal()">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <img id="modal-img" src="" alt="Imagem ampliada">
+  </div>
+
+  <script>
+    function filterDaughter(daughter) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const vitoria = document.querySelector('.vitoria-node');
+      const ines = document.querySelector('.ines-node');
+      const sofia = document.querySelector('.sofia-node');
+
+      const title = document.getElementById('banner-title');
+      const desc = document.getElementById('banner-desc');
+
+      if (daughter === 'vitoria') {
+        vitoria.style.display = 'flex';
+        ines.style.display = 'none';
+        sofia.style.display = 'none';
+        title.innerText = 'Linhagem de Vitória Carolina Grimaux Ebner (1998)';
+        desc.innerText = '32ª geração direta documentada desde Guilherme I, o Conquistador.';
+      } else if (daughter === 'ines') {
+        vitoria.style.display = 'none';
+        ines.style.display = 'flex';
+        sofia.style.display = 'none';
+        title.innerText = 'Linhagem de Inês Odilia Grimaux Ebner (1999)';
+        desc.innerText = '32ª geração direta documentada desde Guilherme I, o Conquistador.';
+      } else if (daughter === 'sofia') {
+        vitoria.style.display = 'none';
+        ines.style.display = 'none';
+        sofia.style.display = 'flex';
+        title.innerText = 'Linhagem de Sofia Helena Grimaux Ebner (2001)';
+        desc.innerText = '32ª geração direta documentada desde Guilherme I, o Conquistador.';
+      } else {
+        vitoria.style.display = 'flex';
+        ines.style.display = 'flex';
+        sofia.style.display = 'flex';
+        title.innerText = 'Timeline Ines Grimaux 32 gerações';
+        desc.innerText = 'Linhagem direta documentada desde Guilherme I, o Conquistador até a artista contemporânea Inés Grimaux e suas filhas.';
+      }
+    }
+
+    function openModal(src) {
+      document.getElementById('modal-img').src = src;
+      document.getElementById('modal').classList.add('active');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
