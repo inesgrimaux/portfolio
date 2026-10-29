@@ -20,13 +20,29 @@ function initLightbox() {
     if (galleryItems.length === 0) return;
 
     let currentIndex = 0;
+    let isZoomed = false;
+    let currentScale = 1;
+    let panX = 0;
+    let panY = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    let lastTapTime = 0;
+    let lastTapX = 0;
+    let lastTapY = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let initialPinchDist = 0;
+    let pinchStartScale = 1;
 
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
     lightbox.innerHTML = `
-        <span class="close-lightbox">&times;</span>
-        <span class="lightbox-arrow arrow-left">&#10094;</span>
-        <span class="lightbox-arrow arrow-right">&#10095;</span>
+        <span class="close-lightbox" aria-label="Close image modal">&times;</span>
+        <span class="lightbox-arrow arrow-left" aria-label="Previous image">&#10094;</span>
+        <span class="lightbox-arrow arrow-right" aria-label="Next image">&#10095;</span>
         <div class="lightbox-content">
             <div class="lightbox-image-container">
                 <img class="lightbox-image" src="" alt="">
@@ -34,7 +50,7 @@ function initLightbox() {
             <div class="lightbox-metadata">
                 <div class="artwork-title"></div>
                 <div class="artwork-details"></div>
-                <div class="artwork-more"><a href="#" target="_blank">More details</a></div>
+                <div class="artwork-more"><a href="#" target="_blank" rel="noopener noreferrer">More details</a></div>
             </div>
         </div>
     `;
@@ -48,6 +64,17 @@ function initLightbox() {
     const closeBtn = lightbox.querySelector('.close-lightbox');
     const prevBtn = lightbox.querySelector('.arrow-left');
     const nextBtn = lightbox.querySelector('.arrow-right');
+
+    const resetZoom = () => {
+        isZoomed = false;
+        currentScale = 1;
+        panX = 0;
+        panY = 0;
+        isDragging = false;
+        lightboxImage.style.transition = 'transform 0.25s cubic-bezier(0.2, 1, 0.3, 1)';
+        lightboxImage.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        lightboxImage.style.transformOrigin = 'center center';
+    };
 
     const showImage = (index) => {
         if (index < 0) index = galleryItems.length - 1;
@@ -67,9 +94,7 @@ function initLightbox() {
         artworkDetails.innerText = `${technique}, ${size} ${year ? '– ' + year : ''}`;
         artworkMore.href = moreLink;
 
-        // Reset zoom position
-        lightboxImage.style.transform = 'scale(1)';
-        lightboxImage.style.transformOrigin = 'center';
+        resetZoom();
     };
 
     galleryItems.forEach((item, index) => {
@@ -80,34 +105,9 @@ function initLightbox() {
         });
     });
 
-    // Navigation
+    // Navigation Buttons (Desktop)
     prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex - 1); });
     nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex + 1); });
-
-    // Touch Swipe Navigation for Mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    lightbox.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, {passive: true});
-
-    lightbox.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, {passive: true});
-
-    const handleSwipe = () => {
-        const threshold = 50; // minimum distance to trigger swipe
-        if (touchEndX < touchStartX - threshold) {
-            // swiped left (next image)
-            showImage(currentIndex + 1);
-        }
-        if (touchEndX > touchStartX + threshold) {
-            // swiped right (previous image)
-            showImage(currentIndex - 1);
-        }
-    };
 
     document.addEventListener('keydown', (e) => {
         if (!lightbox.classList.contains('active')) return;
@@ -119,6 +119,7 @@ function initLightbox() {
     const closeLightbox = () => {
         lightbox.classList.remove('active');
         document.body.style.overflow = 'auto';
+        resetZoom();
     };
 
     closeBtn.addEventListener('click', closeLightbox);
@@ -126,22 +127,142 @@ function initLightbox() {
         if (e.target === lightbox) closeLightbox();
     });
 
-    // Pan-on-hover logic
-    imageContainer.addEventListener('mousemove', (e) => {
-        if (window.innerWidth < 992) return; // Disable on mobile
+    // Desktop Fine Pointer Hover Pan (Mouse only)
+    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (isFinePointer) {
+        imageContainer.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 992) return;
+            const rect = imageContainer.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            lightboxImage.style.transformOrigin = `${x}% ${y}%`;
+            lightboxImage.style.transform = 'scale(3)';
+        });
 
-        const rect = imageContainer.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        imageContainer.addEventListener('mouseleave', () => {
+            resetZoom();
+        });
+    }
 
-        lightboxImage.style.transformOrigin = `${x}% ${y}%`;
-        lightboxImage.style.transform = 'scale(3)';
-    });
+    // Touch Gestures for Mobile & Tablets
+    const handleSwipe = () => {
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        const threshold = 45;
 
-    imageContainer.addEventListener('mouseleave', () => {
-        lightboxImage.style.transform = 'scale(1)';
-        lightboxImage.style.transformOrigin = 'center';
-    });
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
+            if (deltaX < 0) {
+                showImage(currentIndex + 1);
+            } else {
+                showImage(currentIndex - 1);
+            }
+        } else if (deltaY > 90 && Math.abs(deltaX) < 50) {
+            closeLightbox();
+        }
+    };
+
+    imageContainer.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            initialPinchDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            pinchStartScale = currentScale;
+            return;
+        }
+
+        if (e.touches.length === 1) {
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            touchEndX = touch.clientX;
+            touchEndY = touch.clientY;
+
+            if (isZoomed) {
+                isDragging = true;
+                dragStartX = touch.clientX - panX;
+                dragStartY = touch.clientY - panY;
+                lightboxImage.style.transition = 'none';
+            }
+        }
+    }, { passive: true });
+
+    imageContainer.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && initialPinchDist > 0) {
+            const currentDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            currentScale = Math.min(Math.max(pinchStartScale * (currentDist / initialPinchDist), 1), 3.5);
+            lightboxImage.style.transition = 'none';
+            lightboxImage.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${currentScale})`;
+            isZoomed = currentScale > 1.05;
+            return;
+        }
+
+        if (e.touches.length === 1) {
+            const touch = e.touches[0];
+            touchEndX = touch.clientX;
+            touchEndY = touch.clientY;
+
+            if (isZoomed && isDragging) {
+                panX = touch.clientX - dragStartX;
+                panY = touch.clientY - dragStartY;
+                lightboxImage.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${currentScale})`;
+            }
+        }
+    }, { passive: true });
+
+    imageContainer.addEventListener('touchend', (e) => {
+        if (e.touches.length === 0) {
+            initialPinchDist = 0;
+            if (isDragging) {
+                isDragging = false;
+                lightboxImage.style.transition = 'transform 0.2s cubic-bezier(0.2, 1, 0.3, 1)';
+            }
+
+            if (currentScale < 1.05) {
+                resetZoom();
+            }
+
+            // Double Tap Detection
+            const now = Date.now();
+            const deltaX = Math.abs(touchEndX - touchStartX);
+            const deltaY = Math.abs(touchEndY - touchStartY);
+
+            if (deltaX < 15 && deltaY < 15) {
+                const timeDiff = now - lastTapTime;
+                const distFromLastTap = Math.hypot(touchEndX - lastTapX, touchEndY - lastTapY);
+
+                if (timeDiff > 0 && timeDiff < 320 && distFromLastTap < 35) {
+                    if (isZoomed) {
+                        resetZoom();
+                    } else {
+                        const rect = imageContainer.getBoundingClientRect();
+                        const originX = ((touchEndX - rect.left) / rect.width) * 100;
+                        const originY = ((touchEndY - rect.top) / rect.height) * 100;
+                        lightboxImage.style.transformOrigin = `${originX}% ${originY}%`;
+                        currentScale = 2.4;
+                        isZoomed = true;
+                        panX = 0;
+                        panY = 0;
+                        lightboxImage.style.transition = 'transform 0.28s cubic-bezier(0.2, 1, 0.3, 1)';
+                        lightboxImage.style.transform = `translate3d(0, 0, 0) scale(${currentScale})`;
+                    }
+                    lastTapTime = 0;
+                    return;
+                }
+                lastTapTime = now;
+                lastTapX = touchEndX;
+                lastTapY = touchEndY;
+            }
+
+            // Swipe navigation when NOT zoomed
+            if (!isZoomed) {
+                handleSwipe();
+            }
+        }
+    }, { passive: true });
 }
 
 // Back to Top Button Logic
@@ -159,7 +280,6 @@ if (backToTopBtn) {
         e.preventDefault();
         const jumpLinks = document.querySelector('.jump-links');
         if (jumpLinks) {
-            // Scroll to the jump links menu with an offset
             const offset = 80;
             const elementPosition = jumpLinks.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - offset;
@@ -217,4 +337,3 @@ function initSlideshow() {
         loadSlide(slides[followingSlideIndex]);
     }, 5000);
 }
-

@@ -343,7 +343,7 @@ main.content {
 .lightbox-image-container {
     position: relative;
     overflow: hidden;
-    cursor: crosshair;
+    touch-action: none;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -356,12 +356,21 @@ main.content {
     object-fit: contain;
     display: block;
     margin-bottom: 20px;
-    transition: transform 0.1s ease-out;
+    transition: transform 0.2s cubic-bezier(0.2, 1, 0.3, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
     transform-origin: center;
 }
 
-.lightbox-image-container:hover .lightbox-image {
-    transform: scale(3);
+/* Desktop Hover Pan Only - Prevents Mobile Jump */
+@media (hover: hover) and (pointer: fine) {
+    .lightbox-image-container {
+        cursor: crosshair;
+    }
+    .lightbox-image-container:hover .lightbox-image {
+        transform: scale(3);
+    }
 }
 
 .lightbox-metadata {
@@ -490,6 +499,45 @@ main.content {
     }
     .lightbox-arrow {
         display: none !important;
+    }
+    /* Mobile Lightbox UX Enhancements */
+    .lightbox {
+        padding: 10px;
+        padding-top: max(10px, env(safe-area-inset-top));
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
+    .lightbox-content {
+        max-width: 96vw;
+        max-height: 94vh;
+        max-height: 94dvh;
+        padding: 12px 10px 14px;
+        box-shadow: none;
+        border-radius: 4px;
+    }
+    .lightbox-image {
+        max-height: calc(85dvh - 100px);
+        margin-bottom: 10px;
+    }
+    .artwork-title {
+        font-size: 1.1rem;
+        margin-bottom: 2px;
+    }
+    .artwork-details {
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+    .artwork-more a {
+        font-size: 0.75rem;
+    }
+    .close-lightbox {
+        top: 6px;
+        right: 10px;
+        font-size: 2rem;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
